@@ -1,3 +1,0 @@
-#!/bin/bash
-'/bin/bash' '/Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/script.submit' < /dev/null || { rc=$?; if [ "$rc" -gt "128" ]; then echo $rc; else echo -1; fi } > /Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/rc &
-echo $!

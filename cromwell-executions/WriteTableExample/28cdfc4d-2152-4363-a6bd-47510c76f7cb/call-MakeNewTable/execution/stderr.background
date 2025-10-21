@@ -1,8 +1,0 @@
-WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
-+ out_tsv=predictions.tsv
-+ echo -e 'entity:record_id\toutput'
-+ echo -e 'sample1\t/path/to/output1'
-+ echo -e 'sample2\t/path/to/output2'
-+ echo -e 'sample3\t/path/to/output3'
-+ echo -e 'sample4\t/path/to/output4'
-+ echo -e 'sample5\t/path/to/output5'
