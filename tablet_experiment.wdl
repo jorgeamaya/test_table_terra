@@ -21,10 +21,10 @@ task MakeNewTable {
     echo -e "sample4\t/path/to/output4" >> ${out_tsv}
     echo -e "sample5\t/path/to/output5" >> ${out_tsv}
 
-    gsutil cp terra_table.tsv ${workspace_bucket}/Results/terra_table.tsv
+    gsutil cp terra_table.tsv ~{workspace_bucket}/Results/terra_table.tsv
     
     # Import the table directly into the workspace
-    terra workspace set ${workspace_name}
+    terra workspace set ~{workspace_name}
     terra data import-entity-table \
       --table sample \
       --file terra_table.tsv
