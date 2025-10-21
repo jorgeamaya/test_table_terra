@@ -1,0 +1,20 @@
+#!/bin/bash
+# make sure there is no preexisting Docker CID file
+rm -f /Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/docker_cid
+# run as in the original configuration without --rm flag (will remove later)
+docker run \
+  --cidfile /Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/docker_cid \
+  -i \
+   \
+  --entrypoint /bin/bash \
+  -v /Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable:/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable:delegated \
+  jorgeamaya/protbindscreen@sha256:980cca7d2f9f995a2a32d46bbdda3f422bf1b8d781e956b7a853309db119a0cf /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/script
+
+# get the return code (working even if the container was detached)
+rc=$(docker wait `cat /Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/docker_cid`)
+
+# remove the container after waiting
+docker rm `cat /Users/jorgeromero/Desktop/table_experiment/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/docker_cid`
+
+# return exit code
+exit $rc

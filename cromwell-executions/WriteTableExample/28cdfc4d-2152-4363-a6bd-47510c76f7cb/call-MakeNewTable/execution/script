@@ -1,0 +1,49 @@
+#!/bin/bash
+
+cd /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution
+tmpDir=$(mktemp -d "$PWD"/tmp.XXXXXX)
+chmod 777 "$tmpDir"
+export _JAVA_OPTIONS=-Djava.io.tmpdir="$tmpDir"
+export TMPDIR="$tmpDir"
+
+
+(
+cd /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution
+
+)
+
+
+out28cdfc4d="${tmpDir}/out.$$" err28cdfc4d="${tmpDir}/err.$$"
+mkfifo "$out28cdfc4d" "$err28cdfc4d"
+trap 'rm "$out28cdfc4d" "$err28cdfc4d"' EXIT
+touch '/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/stdout' '/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/stderr'
+tee '/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/stdout' < "$out28cdfc4d" &
+tee '/cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/stderr' < "$err28cdfc4d" >&2 &
+(
+cd /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution
+
+
+set -eux
+out_tsv="predictions.tsv"
+#paste <(printf "%s\n" "${sep='\n' entity_ids}") <(printf "%s\n" "${sep='\n' outputs}") \
+#  | awk 'BEGIN {OFS="\t"; print "entity:record_id", "output"} {print $1, $2}' > ${out_tsv}
+echo -e "entity:record_id\toutput" > ${out_tsv}
+echo -e "sample1\t/path/to/output1" >> ${out_tsv}
+echo -e "sample2\t/path/to/output2" >> ${out_tsv}
+echo -e "sample3\t/path/to/output3" >> ${out_tsv}
+echo -e "sample4\t/path/to/output4" >> ${out_tsv}
+echo -e "sample5\t/path/to/output5" >> ${out_tsv}
+)  > "$out28cdfc4d" 2> "$err28cdfc4d"
+echo $? > /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/rc.tmp
+(
+# add a .file in every empty directory to facilitate directory delocalization on the cloud
+cd /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution
+find . -type d -exec sh -c '[ -z "$(ls -A '"'"'{}'"'"')" ] && touch '"'"'{}'"'"'/.file' \;
+)
+(
+cd /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution
+sync
+
+
+)
+mv /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/rc.tmp /cromwell-executions/WriteTableExample/28cdfc4d-2152-4363-a6bd-47510c76f7cb/call-MakeNewTable/execution/rc
