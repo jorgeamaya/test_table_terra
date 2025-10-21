@@ -1,0 +1,13 @@
+{
+  "WriteTableExample.sample_ids": [
+    "sample_A",
+    "sample_B",
+    "sample_C"
+  ],
+
+  "WriteTableExample.result_files": [
+    "sample_A_predictions.tsv",
+    "sample_B_predictions.tsv",
+    "sample_C_predictions.tsv"
+  ]
+}
