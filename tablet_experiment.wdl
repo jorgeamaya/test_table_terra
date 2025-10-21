@@ -36,9 +36,13 @@ task MakeNewTable {
   }
 
   runtime {
-    docker: 'jorgeamaya/protbindscreen:v0.0.1'
+    docker: 'us.gcr.io/broad-dsp-gcr-public/terra-cli:2.0.0'
     memory: "1 GiB"
     cpu: 1
+    disks: "local-disk 10 HDD"
+    bootDiskSizeGb: 10
+    preemptible: 3
+    maxRetries: 1
   }
 }
 
