@@ -1,0 +1,6 @@
+version: 1.2
+
+workflows:
+  - name: Experiment_Table
+    subclass: WDL
+    primaryDescriptorPath: /tablet_experiment.wdl
