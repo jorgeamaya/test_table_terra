@@ -7,6 +7,7 @@ task MakeNewTable {
     String table_name
     String workspace_name
     String workspace_bucket
+    Map[String, Map[String, String]] analysis_matrices
   }
 
   command <<<
@@ -52,7 +53,7 @@ workflow WriteTableExample {
     Array[File] result_files
     String workspace_name
     String workspace_bucket
-
+    Map[String, Map[String, String]] analysis_matrices
   }
 
   call MakeNewTable {
@@ -61,7 +62,8 @@ workflow WriteTableExample {
       outputs = result_files,
       table_name = "predictions",
       workspace_name = workspace_name,
-      workspace_bucket = workspace_bucket
+      workspace_bucket = workspace_bucket,
+      analysis_matrices = analysis_matrices
   }
 
   output {
