@@ -11,7 +11,7 @@ task PredictWithColabfoldLocally {
     set -euxo pipefail
 
     # RUN COLABFOLD PREDICTIONS
-
+    ls -R
     output_dir="colabfold_outputs"
     mkdir -p "${output_dir}"
 
@@ -26,6 +26,7 @@ task PredictWithColabfoldLocally {
     #       --format=csv,nounits,noheader --loop-ms=1000 > gpu_usage.csv &
     #GPU_MON_PID=$!
 
+    ls -R
     colabfold_batch \
         --msa-mode mmseqs2_uniref_env \
         --pair-mode unpaired_paired \
@@ -42,6 +43,7 @@ task PredictWithColabfoldLocally {
     #2>&1 | tee -a colabfold_log.txt
         
     #kill $GPU_MON_PID || true
+    ls -R
     >>>
   
     output {

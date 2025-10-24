@@ -26,7 +26,7 @@ task PrepareFastaGroups {
 
 
     #DEBUGGING
-    #ls -R 
+    ls -R 
     conda info --envs
     python -c "import protbindscreen" && echo "Available" || echo "Not available"
 
@@ -67,6 +67,7 @@ task PrepareFastaGroups {
     #   mv "$f" "$(dirname "$f")/${base%.*}_${dir}.${base##*.}"
     #done
 
+    ls -R
     >>>
 
   
