@@ -9,7 +9,6 @@ workflow ProtBindScreenSubmitMode {
 	input {
 		String query_name
 		String query_sequence
-		String subject_proteome
 
 		File subject_native_sequences_file 
 		File subject_scrambled_sequences_file 
@@ -21,7 +20,6 @@ workflow ProtBindScreenSubmitMode {
 		input:
 			query_name = query_name,
 			query_sequence = query_sequence,
-			subject_proteome = subject_proteome,
 			subject_native_sequences_file = subject_native_sequences_file,
 			subject_scrambled_sequences_file = subject_scrambled_sequences_file,
 			subject_proteome_dict = subject_proteome_dict

@@ -3,7 +3,6 @@ version 1.0
 task PrepareFastaGroups {
     input {
         String query_sequence #= "BMP6"
-        String subject_proteome #= "SASSRRRQQSRNRSTQSQDVARVSSASDYNSSELKTACRKHELYVSFQDLGWQDWIIAPKGYAANYCDGECSFPLNAHMNATNHAIVQTLVHLMNPEYVPKPCCAPTKLNAISVLYFDDNSNVILKKYRNMVVRACGCH"
         String query_name #= "wdl_test_proteome"
         File subject_native_sequences_file #= "subject_proteome_native_seq.tsv"
         File subject_scrambled_sequences_file #= "subject_proteome_scrambled_seq.tsv"
