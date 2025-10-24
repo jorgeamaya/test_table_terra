@@ -1,7 +1,6 @@
 version 1.0
 
-import "../tasks/analyze_screen/analyze_screen.wdl" as analyze_screen_t
-
+import "../Tasks/analyze_screen/analyze_screen.wdl" as analyze_screen_t
 
 workflow ProtBindScreenAnalyzeMode {
 	input {
