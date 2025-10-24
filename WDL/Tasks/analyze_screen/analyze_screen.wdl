@@ -31,11 +31,10 @@ print("DEBUG: analysis_dir =", analysis_dir)
 python_list_files=[Path(x) for x in "~{sep=' ' all_fasta_files_and_the_prediction_outputs}".split()]
 print("DEBUG: python_list_files =", python_list_files)
 
-# ---- Build analysis_matrices dynamically ----
-aa_ranges_i = ~{json_encode(aa_ranges_i_query)}
-aa_ranges_j = ~{json_encode(aa_ranges_j_query)}
+# ---- Build analysis_matrices manually ----
+aa_ranges_i = "~{sep=' ' aa_ranges_i_query}".split()
+aa_ranges_j = "~{sep=' ' aa_ranges_j_query}".split()
 
-# Construct dictionary
 analysis_matrices = {}
 for i, (range_i, range_j) in enumerate(zip(aa_ranges_i, aa_ranges_j), start=1):
     matrix_name = f"matrix_{i}"
@@ -43,15 +42,6 @@ for i, (range_i, range_j) in enumerate(zip(aa_ranges_i, aa_ranges_j), start=1):
         "aa_ranges_i": range_i,
         "aa_ranges_j": range_j
     }
-
-#analysis_matrices_path = Path("~{write_json(analysis_matrices)}")
-#print("DEBUG: analysis_matrices path =", analysis_matrices_path)
-#with open(analysis_matrices_path, "r") as f:
-#    analysis_matrices = json.load(f)
-#
-## Convert from WDL-style [{"left": k, "right": v}] to normal dict
-#if isinstance(analysis_matrices, list) and all("left" in item and "right" in item for item in analysis_matrices):
-#    analysis_matrices = {item["left"]: item["right"] for item in analysis_matrices}
 
 # Pretty print for debug
 print("DEBUG: Loaded analysis_matrices (normalized):")

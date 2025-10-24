@@ -14,8 +14,10 @@ workflow ProtBindScreenAnalyzeMode {
 	Array[String] aa_ranges_j_query #=["1-50","51-100"] example
 	}
 
-	Array[File] all_fasta_files_and_the_prediction_outputs = all_fasta_files + prediction_outputs
-
+	# FIX: Using the explicit flatten() function to convert Array[Array[File]] into Array[File],
+	# which is the correct and most robust method for array concatenation when '+' and 'concat()' fail.
+	Array[File] all_fasta_files_and_the_prediction_outputs = flatten([all_fasta_files, prediction_outputs])
+	
 	call analyze_screen_t.AnalyzeScreen as t_001_analyze_screen {
 		input:
             screen_name = screen_name,
