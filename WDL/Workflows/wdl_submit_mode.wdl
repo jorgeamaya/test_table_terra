@@ -14,8 +14,6 @@ workflow ProtBindScreenSubmitMode {
 		File subject_native_sequences_file 
 		File subject_scrambled_sequences_file 
 		File subject_proteome_dict 
-
-		Array[String] size_tags
 	}
 
 
