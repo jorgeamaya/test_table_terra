@@ -30,5 +30,6 @@ workflow ProtBindScreenAnalyzeMode {
 	}
 	output {
 		Array[File] analysis_output_files = t_001_analyze_screen.analysis_output_files
+		Array[File] analysis_summary_files = t_001_analyze_screen.analysis_summary_files
 	}
 }

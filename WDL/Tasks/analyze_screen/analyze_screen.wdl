@@ -5,7 +5,7 @@ task AnalyzeScreen {
         String screen_name
         String analysis_name
         Array[File]  all_fasta_files_and_the_prediction_outputs
-	File subject_proteome_dictionary
+        File subject_proteome_dictionary
         Int query_len 
         Array[String] aa_ranges_i_query #=["1-50","51-100"] example
         Array[String] aa_ranges_j_query #=["1-50","51-100"] example
@@ -36,12 +36,15 @@ aa_ranges_i = "~{sep=' ' aa_ranges_i_query}".split()
 aa_ranges_j = "~{sep=' ' aa_ranges_j_query}".split()
 
 analysis_matrices = {}
-for i, (range_i, range_j) in enumerate(zip(aa_ranges_i, aa_ranges_j), start=1):
+for i, (range_i, range_j) in enumerate(zip(aa_ranges_i, aa_ranges_j), start=0):
+    i="required" if i == 0 else f"optional_{i}"
     matrix_name = f"matrix_{i}"
     analysis_matrices[matrix_name] = {
         "aa_ranges_i": range_i,
         "aa_ranges_j": range_j
     }
+    if i != "required":
+        analysis_matrices[matrix_name]["include"] = "true"
 
 # Pretty print for debug
 print("DEBUG: Loaded analysis_matrices (normalized):")
@@ -61,6 +64,7 @@ PYCODE
   
     output {
         Array[File] analysis_output_files = glob("Results/~{screen_name}/**")
+        Array[File] analysis_summary_files = glob("Results/~{screen_name}/**/**/**")
     }
 
     runtime {
