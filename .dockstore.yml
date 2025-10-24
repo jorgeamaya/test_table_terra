@@ -4,7 +4,6 @@ workflows:
   - name: Experiment_Table
     subclass: WDL
     primaryDescriptorPath: /tablet_experiment.wdl
-workflows:
   - name: Analyze_Table
     subclass: WDL
     primaryDescriptorPath: /WDL/Workflows/wdl_analyze_mode.wdl
