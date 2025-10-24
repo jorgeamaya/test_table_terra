@@ -1,8 +1,8 @@
 version 1.0
 
-import "../tasks/prepare_fasta_groups/prepare_fasta_groups.wdl" as prepare_fasta_groups_t
+import "../Tasks/prepare_fasta_groups/prepare_fasta_groups.wdl" as prepare_fasta_groups_t
 #import "../tasks/mock_task/mock_task.wdl" as mock_task_t
-import "../tasks/predict_with_colabfold/predict_with_colabfold_locally.wdl" as predict_with_colabfold_locally_t
+import "../Tasks/predict_with_colabfold/predict_with_colabfold_locally.wdl" as predict_with_colabfold_locally_t
 #import "../tasks/predict_with_colabfold/predict_with_colabfold.wdl" as predict_with_colabfold_t
 
 workflow ProtBindScreenSubmitMode {
