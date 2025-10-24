@@ -21,21 +21,25 @@ task PredictWithColabfoldLocally {
     export XLA_PYTHON_CLIENT_ALLOCATOR="platform"
     export TF_FORCE_GPU_ALLOW_GROWTH="true"
 
+    # Start continuous GPU logging in background
+    nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu \
+           --format=csv,nounits,noheader --loop-ms=1000 > gpu_usage.csv &
+    GPU_MON_PID=$!
 
     colabfold_batch \
-    --msa-mode mmseqs2_uniref_env \
-    --pair-mode unpaired_paired \
-    --pair-strategy greedy \
-    --random-seed 42 \
-    --num-models 5 \
-    --num-recycle 3 \
-    --model-type auto \
-    --rank auto \
-    --num-ensemble 1 \
-    --num-seeds 1 \
-    "~{fasta_file}" \
-    "${output_dir}"
-
+        --msa-mode mmseqs2_uniref_env \
+        --pair-mode unpaired_paired \
+        --pair-strategy greedy \
+        --random-seed 42 \
+        --num-models 5 \
+        --num-recycle 3 \
+        --model-type auto \
+        --rank auto \
+        --num-ensemble 1 \
+        --num-seeds 1 \
+        "~{fasta_file}" \
+        "${output_dir}" 2>&1 | tee -a colabfold_log.txt
+        kill $GPU_MON_PID || true
     >>>
   
     output {
