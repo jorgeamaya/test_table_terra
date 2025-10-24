@@ -7,4 +7,4 @@ workflows:
 workflows:
   - name: Analyze_Table
     subclass: WDL
-    primaryDescriptorPath: WDL/Workflows/wdl_analyze_mode.wdl
+    primaryDescriptorPath: /WDL/Workflows/wdl_analyze_mode.wdl
