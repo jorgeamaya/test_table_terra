@@ -51,8 +51,6 @@ workflow ProtBindScreenSubmitMode {
 		Array[File] predictions_input_files = t_001_prepare_fasta_groups.predictions_input_files
 		Array[File] predictions_input_counts = t_001_prepare_fasta_groups.predictions_input_counts
 		Array[File] placement_data = t_001_prepare_fasta_groups.placement_data
-		Array[File] query = t_001_prepare_fasta_groups.query
-		Array[File] subject_proteome_copy = t_001_prepare_fasta_groups.subject_proteome_copy
 		String screen_dir_string_path = t_001_prepare_fasta_groups.screen_dir_string_path
 		Array[File] colabfold_outputs = flatten(t_002_predict_with_colabfold_locally.colabfold_outputs)
 		#Array[File] colabfold_outputs = t_002_predict_with_colabfold_locally.colabfold_outputs

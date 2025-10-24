@@ -1,13 +1,8 @@
 {
-  "WriteTableExample.sample_ids": [
-    "sample_A",
-    "sample_B",
-    "sample_C"
-  ],
-
-  "WriteTableExample.result_files": [
-    "sample_A_predictions.tsv",
-    "sample_B_predictions.tsv",
-    "sample_C_predictions.tsv"
-  ]
+  "ProtBindScreenSubmitMode.query_name": "BMP6",
+  "ProtBindScreenSubmitMode.query_sequence": "SASSRRRQQSRNRSTQSQDVARVSSASDYNSSELKTACRKHELYVSFQDLGWQDWIIAPKGYAANYCDGECSFPLNAHMNATNHAIVQTLVHLMNPEYVPKPCCAPTKLNAISVLYFDDNSNVILKKYRNMVVRACGCH",
+  "ProtBindScreenSubmitMode.subject_proteome": "wdl_test_proteome_01",
+  "ProtBindScreenSubmitMode.subject_native_sequences_file": "/Users/jorgeromero/Desktop/protbindscreen/data/wdl_test_proteome/subject_proteome_native_seq.tsv",
+  "ProtBindScreenSubmitMode.subject_scrambled_sequences_file": "/Users/jorgeromero/Desktop/protbindscreen/data/wdl_test_proteome/subject_proteome_scrambled_seq.tsv",
+  "ProtBindScreenSubmitMode.subject_proteome_dict": "/Users/jorgeromero/Desktop/protbindscreen/data/wdl_test_proteome/subject_proteome_dictionary.tsv"
 }

@@ -22,9 +22,9 @@ task PredictWithColabfoldLocally {
     export TF_FORCE_GPU_ALLOW_GROWTH="true"
 
     # Start continuous GPU logging in background
-    nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu \
-           --format=csv,nounits,noheader --loop-ms=1000 > gpu_usage.csv &
-    GPU_MON_PID=$!
+    #nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu \
+    #       --format=csv,nounits,noheader --loop-ms=1000 > gpu_usage.csv &
+    #GPU_MON_PID=$!
 
     colabfold_batch \
         --msa-mode mmseqs2_uniref_env \
@@ -38,16 +38,22 @@ task PredictWithColabfoldLocally {
         --num-ensemble 1 \
         --num-seeds 1 \
         "~{fasta_file}" \
-        "${output_dir}" 2>&1 | tee -a colabfold_log.txt
-        kill $GPU_MON_PID || true
+        "${output_dir}" 
+    #2>&1 | tee -a colabfold_log.txt
+        
+    #kill $GPU_MON_PID || true
     >>>
   
     output {
         Array[File] colabfold_outputs = glob("colabfold_outputs/*")
     }
     runtime {
-        gpu: 1
-        cpu: 4
+        #gpu: 1
+	gpuType: "nvidia-tesla-t4"
+        gpuCount: 1
+        nvidiaDriverVersion: "418.87.00"
+        zones: "us-central1-c"
+        cpu: 1
         disks: "local-disk 10 HDD" 
         bootDiskSizeGb: 10
         preemptible: 3

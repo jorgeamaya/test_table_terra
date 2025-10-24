@@ -74,8 +74,6 @@ task PrepareFastaGroups {
         Array[File] predictions_input_files = glob("Results/~{query_name}_screen/predictions/*/*.fasta")
         Array[File] predictions_input_counts = glob("Results/~{query_name}_screen/predictions/*.txt")
         Array[File] placement_data = glob("Results/~{query_name}_screen/predictions/file_placements_inventory.tsv")
-        Array[File] query = glob("Results/~{query_name}_screen/~{query_name}_screen.tsv")
-        Array[File] subject_proteome_copy = glob("Results/~{query_name}_screen/subject_proteome_dictionary.tsv")
         String screen_dir_string_path = "Results/~{query_name}_screen"
     }
 
