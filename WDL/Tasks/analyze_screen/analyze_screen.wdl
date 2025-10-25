@@ -17,6 +17,8 @@ task AnalyzeScreen {
     conda info --envs
     python -c "import protbindscreen" && echo "Available" || echo "Not available"
 
+    cp ~{subject_proteome_dictionary_file} subject_proteome_dictionary.tsv
+
     python3 - <<'PYCODE'
 import json
 from pathlib import Path
@@ -56,7 +58,7 @@ screen_analysis(
     analysis_name='~{analysis_name}',
     query_len=~{query_len},
     all_fasta_files_and_the_prediction_outputs=python_list_files,
-    subject_proteome_dictionary=Path('~{subject_proteome_dictionary_file}'),
+    subject_proteome_dictionary=Path('subject_proteome_dictionary.tsv'),
     analysis_matrices=analysis_matrices
 )
 PYCODE
