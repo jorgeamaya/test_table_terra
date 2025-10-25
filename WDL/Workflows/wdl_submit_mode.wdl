@@ -11,10 +11,9 @@ workflow ProtBindScreenSubmitMode {
 		String query_sequence
 
 		File subject_native_sequences_file 
-		File subject_scrambled_sequences_file 
-		File subject_proteome_dict 
+		File subject_scrambled_sequences_file
+		File subject_proteome_dictionary_file
 	}
-
 
 	call prepare_fasta_groups_t.PrepareFastaGroups as t_001_prepare_fasta_groups {
 		input:
@@ -22,7 +21,7 @@ workflow ProtBindScreenSubmitMode {
 			query_sequence = query_sequence,
 			subject_native_sequences_file = subject_native_sequences_file,
 			subject_scrambled_sequences_file = subject_scrambled_sequences_file,
-			subject_proteome_dict = subject_proteome_dict
+			subject_proteome_dictionary_file = subject_proteome_dictionary_file
 	}
 
 	#call mock_task_t.SeeHowInputVarLook as t_002_see_how_input_var_look {
@@ -31,7 +30,6 @@ workflow ProtBindScreenSubmitMode {
 	#		screen_dir_string_path = t_001_prepare_fasta_groups.screen_dir_string_path,
 	#		size_tags = size_tags
 	#}
-
 	
 	scatter (fasta_file in t_001_prepare_fasta_groups.predictions_input_files) {
 		call predict_with_colabfold_locally_t.PredictWithColabfoldLocally as t_002_predict_with_colabfold_locally {
@@ -48,8 +46,6 @@ workflow ProtBindScreenSubmitMode {
 	output {
 		Array[File] predictions_input_files = t_001_prepare_fasta_groups.predictions_input_files
 		Array[File] predictions_input_counts = t_001_prepare_fasta_groups.predictions_input_counts
-		Array[File] placement_data = t_001_prepare_fasta_groups.placement_data
-		String screen_dir_string_path = t_001_prepare_fasta_groups.screen_dir_string_path
 		Array[File] colabfold_outputs = flatten(t_002_predict_with_colabfold_locally.colabfold_outputs)
 		#Array[File] colabfold_outputs = t_002_predict_with_colabfold_locally.colabfold_outputs
 		#File mock_report = t_002_see_how_input_var_look.mock_report

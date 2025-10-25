@@ -6,9 +6,8 @@ task PrepareFastaGroups {
         String query_name #= "wdl_test_proteome"
         File subject_native_sequences_file #= "subject_proteome_native_seq.tsv"
         File subject_scrambled_sequences_file #= "subject_proteome_scrambled_seq.tsv"
-        File subject_proteome_dict #= "subject_proteome_dictionary.tsv"
+        File subject_proteome_dictionary_file #= "subject_proteome_dictionary.tsv"
     }
-
 
     command <<<
     set -euxo pipefail
@@ -21,8 +20,7 @@ task PrepareFastaGroups {
     query_protein_path="${screen_dir}/query_~{query_name}.tsv"
     echo -e "query_name\tquery_sequence\n~{query_name}\t~{query_sequence}" > ${query_protein_path}
 
-    cp ~{subject_proteome_dict} ${screen_dir}
-
+    cp ~{subject_proteome_dictionary_file} ${screen_dir}
 
     #DEBUGGING
     ls -R 
@@ -73,8 +71,6 @@ task PrepareFastaGroups {
     output {
         Array[File] predictions_input_files = glob("Results/~{query_name}_screen/predictions/*/*.fasta")
         Array[File] predictions_input_counts = glob("Results/~{query_name}_screen/predictions/*.txt")
-        Array[File] placement_data = glob("Results/~{query_name}_screen/predictions/file_placements_inventory.tsv")
-        String screen_dir_string_path = "Results/~{query_name}_screen"
     }
 
     runtime {
@@ -84,6 +80,6 @@ task PrepareFastaGroups {
         bootDiskSizeGb: 10 
         preemptible: 3
         maxRetries: 1
-        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/protbindscreen:v0.0.2'
+        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/protbindscreen:v0.0.3'
     }
 }
