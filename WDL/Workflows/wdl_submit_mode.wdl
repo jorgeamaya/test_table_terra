@@ -1,9 +1,7 @@
 version 1.0
 
-import "../Tasks/prepare_fasta_groups/prepare_fasta_groups.wdl" as prepare_fasta_groups_t
-#import "../tasks/mock_task/mock_task.wdl" as mock_task_t
-import "../Tasks/predict_with_colabfold/predict_with_colabfold_locally.wdl" as predict_with_colabfold_locally_t
-#import "../tasks/predict_with_colabfold/predict_with_colabfold.wdl" as predict_with_colabfold_t
+import "../Tasks/prepare_fasta_files/prepare_fasta_files.wdl" as prepare_fasta_files_t
+import "../Tasks/predict_with_colabfold/predict_with_colabfold.wdl" as predict_with_colabfold_t
 
 workflow ProtBindScreenSubmitMode {
 	input {
@@ -12,42 +10,25 @@ workflow ProtBindScreenSubmitMode {
 
 		File subject_native_sequences_file 
 		File subject_scrambled_sequences_file
-		File subject_proteome_dictionary_file
 	}
 
-	call prepare_fasta_groups_t.PrepareFastaGroups as t_001_prepare_fasta_groups {
+	call prepare_fasta_files_t.PrepareFastaFiles as t_001_prepare_fasta_files {
 		input:
 			query_name = query_name,
 			query_sequence = query_sequence,
 			subject_native_sequences_file = subject_native_sequences_file,
-			subject_scrambled_sequences_file = subject_scrambled_sequences_file,
-			subject_proteome_dictionary_file = subject_proteome_dictionary_file
+			subject_scrambled_sequences_file = subject_scrambled_sequences_file
 	}
-
-	#call mock_task_t.SeeHowInputVarLook as t_002_see_how_input_var_look {
-	#	input:
-	#		predictions_input_files = t_001_prepare_fasta_groups.predictions_input_files,
-	#		screen_dir_string_path = t_001_prepare_fasta_groups.screen_dir_string_path,
-	#		size_tags = size_tags
-	#}
 	
-	scatter (fasta_file in t_001_prepare_fasta_groups.predictions_input_files) {
-		call predict_with_colabfold_locally_t.PredictWithColabfoldLocally as t_002_predict_with_colabfold_locally {
+	scatter (fasta_file in t_001_prepare_fasta_files.colabfold_input_files) {
+		call predict_with_colabfold_t.PredictWithColabfold as t_002_predict_with_colabfold {
 			input:
 				fasta_file = fasta_file
 		}
 	}
 
-	#call predict_with_colabfold_locally_t.PredictWithColabfoldLocally as t_002_predict_with_colabfold_locally {
-	#	input:
-	#		predictions_input_files = t_001_prepare_fasta_groups.predictions_input_files
-	#}
-
 	output {
-		Array[File] predictions_input_files = t_001_prepare_fasta_groups.predictions_input_files
-		Array[File] predictions_input_counts = t_001_prepare_fasta_groups.predictions_input_counts
-		Array[File] colabfold_outputs = flatten(t_002_predict_with_colabfold_locally.colabfold_outputs)
-		#Array[File] colabfold_outputs = t_002_predict_with_colabfold_locally.colabfold_outputs
-		#File mock_report = t_002_see_how_input_var_look.mock_report
+		Array[File] colabfold_input_files = t_001_prepare_fasta_files.colabfold_input_files
+		Array[File] colabfold_output_files = flatten(t_002_predict_with_colabfold.colabfold_output_files)
 	}
 }

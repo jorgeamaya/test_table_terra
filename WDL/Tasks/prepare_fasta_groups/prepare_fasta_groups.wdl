@@ -69,8 +69,7 @@ task PrepareFastaGroups {
 
   
     output {
-        Array[File] predictions_input_files = glob("Results/~{query_name}_screen/predictions/*/*.fasta")
-        Array[File] predictions_input_counts = glob("Results/~{query_name}_screen/predictions/*.txt")
+        Array[File] colabfold_input_files = glob("Results/~{query_name}_screen/predictions/*/*.fasta")
     }
 
     runtime {

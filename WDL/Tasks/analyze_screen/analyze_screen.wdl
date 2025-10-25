@@ -5,10 +5,10 @@ task AnalyzeScreen {
         String screen_name
         String analysis_name
         Array[File]  all_fasta_files_and_the_prediction_outputs
-        File subject_proteome_dictionary
+        File subject_proteome_dictionary_file
         Int query_len 
-        Array[String] aa_ranges_i_query #=["1-50","51-100"] example
-        Array[String] aa_ranges_j_query #=["1-50","51-100"] example
+        Array[String] aa_ranges_i #=["1-50","51-100"] example
+        Array[String] aa_ranges_j #=["1-50","51-100"] example
     }
 
     command <<<
@@ -32,8 +32,8 @@ python_list_files=[Path(x) for x in "~{sep=' ' all_fasta_files_and_the_predictio
 print("DEBUG: python_list_files =", python_list_files)
 
 # ---- Build analysis_matrices manually ----
-aa_ranges_i = "~{sep=' ' aa_ranges_i_query}".split()
-aa_ranges_j = "~{sep=' ' aa_ranges_j_query}".split()
+aa_ranges_i = "~{sep=' ' aa_ranges_i}".split()
+aa_ranges_j = "~{sep=' ' aa_ranges_j}".split()
 
 analysis_matrices = {}
 for i, (range_i, range_j) in enumerate(zip(aa_ranges_i, aa_ranges_j), start=0):
@@ -56,15 +56,14 @@ screen_analysis(
     analysis_name='~{analysis_name}',
     query_len=~{query_len},
     all_fasta_files_and_the_prediction_outputs=python_list_files,
-    subject_proteome_dictionary=Path('~{subject_proteome_dictionary}'),
+    subject_proteome_dictionary=Path('~{subject_proteome_dictionary_file}'),
     analysis_matrices=analysis_matrices
 )
 PYCODE
     >>>
   
     output {
-        Array[File] analysis_output_files = glob("Results/~{screen_name}/**")
-        Array[File] analysis_summary_files = glob("Results/~{screen_name}/**/**/**")
+        Array[File] analysis_output_files = glob("Results/~{screen_name}/**/**/**")
     }
 
     runtime {
