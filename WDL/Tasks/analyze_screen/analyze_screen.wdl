@@ -4,7 +4,7 @@ task AnalyzeScreen {
     input {
         String screen_name
         String analysis_name
-        Array[File]  all_fasta_files_and_the_prediction_outputs
+        Array[File] all_fasta_files_and_the_prediction_outputs
         File subject_proteome_dictionary_file
         Int query_len 
         Array[String] aa_ranges_i #=["1-50","51-100"] example
