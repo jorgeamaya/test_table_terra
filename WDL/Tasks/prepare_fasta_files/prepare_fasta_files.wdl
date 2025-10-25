@@ -22,14 +22,14 @@ task PrepareFastaFiles {
     ls -R 
     conda info --envs
     python -c "import protbindscreen" && echo "Available" || echo "Not available"
-    
-    python3 -c "from pathlib import Path; from protbindscreen.submission.submission_helper import group_fasta_files; fasta_groups_count, placement_data_path, trailing_fasta_files = group_fasta_files(Path('${predictions_dir}'))"
+
+    python3 -c "from pathlib import Path; from protbindscreen.submission.submission_helper import make_fasta_files; count = make_fasta_files(Path('${query_protein_path}'), Path('~{subject_native_sequences_file}'), Path('~{subject_scrambled_sequences_file}'), Path('${predictions_dir}'))"
 
     ls -R
     >>>
 
     output {
-        Array[File] colabfold_input_files = glob("Results/~{query_name}_screen/predictions/*/*.fasta")
+        Array[File] colabfold_input_files = glob("Results/~{query_name}_screen/predictions/*.fasta")
     }
 
     runtime {
