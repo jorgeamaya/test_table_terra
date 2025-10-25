@@ -19,6 +19,18 @@ task AnalyzeScreen {
 
     cp ~{subject_proteome_dictionary_file} subject_proteome_dictionary.tsv
 
+    (
+        echo -e "~{sep='\n' all_fasta_files_and_the_prediction_outputs}" | \
+        while IFS= read -r line; do
+            # 2. Process each line safely, ensuring empty lines are skipped.
+            if [[ -n "$line" ]]; then
+                echo "$line"
+            fi
+        done
+    ) > all_files.txt
+
+    cat all_files.txt
+
     python3 - <<'PYCODE'
 import json
 from pathlib import Path
@@ -30,7 +42,15 @@ analysis_dir.mkdir(parents=True, exist_ok=True)
 print("DEBUG: screen_dir =", screen_dir)
 print("DEBUG: analysis_dir =", analysis_dir)
 
-python_list_files=[Path(x) for x in "~{sep=' ' all_fasta_files_and_the_prediction_outputs}".split()]
+python_list_files=[]
+with open('all_files.txt', 'r') as f:
+    for line in f:
+        path = line.strip()
+        if path:
+            python_list_files.append(Path(path))
+
+#python_list_files = [Path(p) for p in ${sep=' ' all_fasta_files_and_the_prediction_outputs}]
+#python_list_files=[Path(x) for x in "~{sep=' ' all_fasta_files_and_the_prediction_outputs}".split()]
 
 # ---- Build analysis_matrices manually ----
 aa_ranges_i = "~{sep=' ' aa_ranges_i}".split()
