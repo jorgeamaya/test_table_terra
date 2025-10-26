@@ -28,5 +28,7 @@ workflow ProtBindScreenAnalyzeMode {
 	}
 	output {
 		Array[File] analysis_output_files = t_001_analyze_screen.analysis_output_files
+		Array[String] aa_ranges_i_final = aa_ranges_i
+		Array[String] aa_ranges_j_final = aa_ranges_j
 	}
 }
