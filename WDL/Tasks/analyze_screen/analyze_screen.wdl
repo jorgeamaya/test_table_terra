@@ -19,11 +19,6 @@ task AnalyzeScreen {
 
     cp ~{subject_proteome_dictionary_file} subject_proteome_dictionary.tsv
 
-    #mkdir -p Files_Repo
-    #for f in ~{sep=' ' all_fasta_files_and_the_prediction_outputs}; do
-    #    cp "$f" Files_Repo/
-    #done
-
     ls -R
     echo "Entering Python Analysis Script"
     python3 - <<'PYCODE'
@@ -37,9 +32,6 @@ analysis_dir = Path("Results/~{screen_name}/analysis/~{analysis_name}")
 analysis_dir.mkdir(parents=True, exist_ok=True)
 print("DEBUG: screen_dir =", screen_dir)
 print("DEBUG: analysis_dir =", analysis_dir)
-
-#repo_dir = Path("Files_Repo")
-#python_list_files = [p for p in repo_dir.glob("*") if p.is_file()]
 
 python_list_files=[Path(x) for x in "~{sep=' ' all_fasta_files_and_the_prediction_outputs}".split()]
 print("DEBUG: python_list_files =", python_list_files)
