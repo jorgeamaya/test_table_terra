@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "protbindscreen"
+version = "0.1.0"
+description = "ProtBindScreen tools and scripts for running the submit and analyze mode"
+requires-python = ">=3.11"
+
+dependencies = [
+  "pandas==2.2.3",
+  "numpy==2.2.6",
+  "scikit-learn==1.6.1",
+  "statsmodels==0.14.5",
+  "matplotlib==3.10.7",
+  "seaborn==0.13.2",
+  "plotly==6.1.1"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["protbindscreen*"]  # finds protbindscreen and its subpackages
