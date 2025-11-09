@@ -10,3 +10,6 @@ workflows:
   - name: Submit_Data
     subclass: WDL
     primaryDescriptorPath: /WDL/Workflows/wdl_submit_mode.wdl
+  - name: Submit_Data_Test
+    subclass: WDL
+    primaryDescriptorPath: /WDL/Workflows/wdl_submit_mode_test.wdl
