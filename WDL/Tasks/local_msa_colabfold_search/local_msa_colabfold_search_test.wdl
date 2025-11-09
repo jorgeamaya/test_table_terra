@@ -24,8 +24,6 @@ task LocalMSAColabfoldSearch {
     ls -lh ${input_dir}
 
     # PREPARING COLABFOLD DATABASE DIRECTORY
-    pip install --no-cache-dir gsutil
-    gsutil --version
 
     # This is what I got so far, but I am completelly annoyed and I don't see it as a solution...or it can be a last or temporary one.
     # Anyway, how much disk space we need to request at runtime? 2TB SSD? the db is 1.4-1.6TB. The a3m files are also something.
@@ -38,7 +36,8 @@ task LocalMSAColabfoldSearch {
     colabfold_db_dir="colabfold_db"
     mkdir -p "${colabfold_db_dir}"
     echo "Downloading ColabFold database to ${colabfold_db_dir} ..."
-    gsutil -m cp -r ~{colabfold_db_path}/* "${colabfold_db_dir}/"
+    gcloud storage ls ~{colabfold_db_path}
+    gcloud storage cp -r ~{colabfold_db_path}/* "${colabfold_db_dir}/"
 
 
     # MAKE OUTPUT DIRECTORY
@@ -79,6 +78,6 @@ task LocalMSAColabfoldSearch {
         preemptible: 0
         maxRetries: 1
         memory: "256 GB"
-        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.5'
+        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
     }
 }
