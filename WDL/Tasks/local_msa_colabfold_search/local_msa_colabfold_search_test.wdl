@@ -69,16 +69,16 @@ task LocalMSAColabfoldSearch {
         Array[File] colabfold_a3m_files = glob("Results/~{query_name}_screen/predictions/a3m_files/*.a3m")
     }
     runtime {
-	gpuType: "nvidia-tesla-t4"
+	    gpuType: "nvidia-tesla-t4"
         gpuCount: 1
         nvidiaDriverVersion: "418.87.00"
         zones: "us-central1-c"
-        cpu: 1
-        disks: "local-disk 10 HDD" 
+        cpu: 2
+        disks: "local-disk 2000 SSD" 
         bootDiskSizeGb: 10
-        preemptible: 3
+        preemptible: 0
         maxRetries: 1
-        memory: "12 GB"
+        memory: "256 GB"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.5'
     }
 }
