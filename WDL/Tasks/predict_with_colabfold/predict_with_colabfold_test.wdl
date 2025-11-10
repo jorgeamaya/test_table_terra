@@ -49,6 +49,6 @@ task PredictWithColabfold {
         preemptible: 3
         maxRetries: 1
         memory: "12 GB"
-        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.5'
+        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
     }
 }
