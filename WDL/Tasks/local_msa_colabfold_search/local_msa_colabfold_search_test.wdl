@@ -11,10 +11,10 @@ task LocalMSAColabfoldSearch {
     set -euxo pipefail
 
     ## GETTING FASTA INPUT DIRECTORY AND LISTING FILES
-    #echo "Files:"
-    #for f in ~{sep=" " colabfold_input_files}; do
-    #    echo "$f"
-    #done
+    echo "Files:"
+    for f in ~{sep=" " colabfold_input_files}; do
+        echo "$f"
+    done
 
     # Get parent directory of the first file
     input_dir=$(dirname "~{colabfold_input_files[0]}")
@@ -33,11 +33,11 @@ task LocalMSAColabfoldSearch {
     # Other options we can explore are https://cloud.google.com/filestore?hl=en and "persistent disk"???
     # I cannot test locally anything that involved copying into the VM 1.6T because I don't have space.
 
-    #colabfold_db_dir="colabfold_db"
-    #mkdir -p "${colabfold_db_dir}"
-    #echo "Downloading ColabFold database to ${colabfold_db_dir} ..."
-    #gcloud storage ls ~{colabfold_db_path}
-    #gcloud storage cp -r ~{colabfold_db_path}/* "${colabfold_db_dir}/"
+    colabfold_db_dir="colabfold_db"
+    mkdir -p "${colabfold_db_dir}"
+    echo "Downloading ColabFold database to ${colabfold_db_dir} ..."
+    gcloud storage ls ~{colabfold_db_path}
+    gcloud storage cp -r ~{colabfold_db_path}/* "${colabfold_db_dir}/"
 
 
     # MAKE OUTPUT DIRECTORY
@@ -57,7 +57,7 @@ task LocalMSAColabfoldSearch {
     ls -R
     colabfold_search \
         "${input_dir}" \
-        "/mnt/disks/cromwell_root/fc-da84bc8a-293e-4823-9157-0629b04a1ac4/colabfold_db" \
+        "${colabfold_db_dir}" \
         "${output_dir}" \
         --gpu 1
 
@@ -65,7 +65,7 @@ task LocalMSAColabfoldSearch {
     >>>
   
     output {
-        Array[File] colabfold_a3m_files = glob("Results/~{query_name}_screen/predictions/a3m_files/*.a3m")
+        Array[File] colabfold_a3m_files = glob("Results/~{query_name}_screen/predictions/a3m_files/~{query_name}*.a3m")
     }
     runtime {
 	    gpuType: "nvidia-tesla-t4"
@@ -73,7 +73,7 @@ task LocalMSAColabfoldSearch {
         nvidiaDriverVersion: "418.87.00"
         zones: "us-central1-c"
         cpu: 1
-        disks: "local-disk 100 SSD" 
+        disks: "local-disk 2000 SSD" 
         bootDiskSizeGb: 10
         preemptible: 0
         maxRetries: 1
