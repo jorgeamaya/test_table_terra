@@ -39,7 +39,7 @@ task PredictWithColabfold {
         Array[File] colabfold_output_files = glob("colabfold_outputs/*")
     }
     runtime {
-	gpuType: "nvidia-tesla-t4"
+		gpuType: "nvidia-tesla-t4"
         gpuCount: 1
         nvidiaDriverVersion: "418.87.00"
         zones: "us-central1-c"
