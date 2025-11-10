@@ -72,7 +72,7 @@ task LocalMSAColabfoldSearch {
         gpuCount: 1
         nvidiaDriverVersion: "418.87.00"
         zones: "us-central1-c"
-        cpu: 2
+        cpu: 1
         disks: "local-disk 2000 SSD" 
         bootDiskSizeGb: 10
         preemptible: 0
