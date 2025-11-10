@@ -17,7 +17,7 @@ task LocalMSAColabfoldSearch {
     done
 
     # Get parent directory of the first file
-    input_dir=$(dirname "~{colabfold_input_files[0]}")
+    input_dir=$(dirname ~{colabfold_input_files[0]})
     echo "Parent directory: ${input_dir}"
 
     # List all input files
@@ -37,7 +37,7 @@ task LocalMSAColabfoldSearch {
     mkdir -p "${colabfold_db_dir}"
     echo "Downloading ColabFold database to ${colabfold_db_dir} ..."
     gcloud storage ls ~{colabfold_db_path}
-    gcloud storage cp -r ~{colabfold_db_path}/* "${colabfold_db_dir}/"
+    gcloud storage cp -r ~{colabfold_db_path} "${colabfold_db_dir}/"
 
 
     # MAKE OUTPUT DIRECTORY
