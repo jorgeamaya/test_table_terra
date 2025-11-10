@@ -14,11 +14,11 @@ task PredictWithColabfold {
     output_dir="Results/~{query_name}_screen/predictions/colabfold_outputs"
     mkdir -p "${output_dir}"
 
-    # Recommended ColabFold GPU environment variables
-    export TF_FORCE_UNIFIED_MEMORY="1"
-    export XLA_PYTHON_CLIENT_MEM_FRACTION="4.0"
-    export XLA_PYTHON_CLIENT_ALLOCATOR="platform"
-    export TF_FORCE_GPU_ALLOW_GROWTH="true"
+    ## Recommended ColabFold GPU environment variables
+    #export TF_FORCE_UNIFIED_MEMORY="1"
+    #export XLA_PYTHON_CLIENT_MEM_FRACTION="4.0"
+    #export XLA_PYTHON_CLIENT_ALLOCATOR="platform"
+    #export TF_FORCE_GPU_ALLOW_GROWTH="true"
 
     ls -R
     colabfold_batch \
@@ -48,7 +48,7 @@ task PredictWithColabfold {
         bootDiskSizeGb: 10
         preemptible: 3
         maxRetries: 1
-        memory: "12 GB"
+        memory: "14 GB"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
     }
 }
