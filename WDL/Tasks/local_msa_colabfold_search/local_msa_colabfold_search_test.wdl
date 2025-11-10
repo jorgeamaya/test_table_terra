@@ -37,7 +37,7 @@ task LocalMSAColabfoldSearch {
     mkdir -p "${colabfold_db_dir}"
     echo "Downloading ColabFold database to ${colabfold_db_dir} ..."
     gcloud storage ls ~{colabfold_db_path}
-    gcloud storage cp -r ~{colabfold_db_path} "${colabfold_db_dir}/"
+    gcloud storage cp -r ~{colabfold_db_path}/* "${colabfold_db_dir}/"
 
 
     # MAKE OUTPUT DIRECTORY
