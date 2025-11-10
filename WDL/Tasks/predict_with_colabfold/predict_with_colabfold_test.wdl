@@ -36,7 +36,7 @@ task PredictWithColabfold {
     >>>
   
     output {
-        Array[File] colabfold_output_files = glob("colabfold_outputs/*")
+        Array[File] colabfold_output_files = glob("Results/~{query_name}_screen/predictions/colabfold_outputs/*")
     }
     runtime {
 		gpuType: "nvidia-tesla-t4"
