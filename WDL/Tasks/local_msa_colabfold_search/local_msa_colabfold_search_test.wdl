@@ -85,7 +85,7 @@ task LocalMSAColabfoldSearch {
         Array[File] colabfold_a3m_files = glob("Results/~{query_name}_screen/predictions/a3m_files/~{query_name}*.a3m")
     }
 
-      runtime {
+    runtime {
         cpu: 16
         memory: "64 GB"
         disks: "local-disk 2000 SSD"
