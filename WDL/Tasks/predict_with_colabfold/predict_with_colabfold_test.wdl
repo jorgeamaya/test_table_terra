@@ -47,7 +47,6 @@ task PredictWithColabfold {
         cpu: 12
         memory: "64 GB"
         machineType: "a2-highgpu-1g"
-        gpuType: "nvidia-a100-40gb"
         gpuCount: 1
         preemptible: 3
         maxRetries: 1
