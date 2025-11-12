@@ -68,7 +68,7 @@ task LocalMSAColabfoldSearch {
         "${output_dir}" \
         --gpu 1 \
         --gpu-server 1 \
-        --threads 12 \
+        --threads 32 \
         --prefilter-mode 1 \
         --db-load-mode 0
 
@@ -84,7 +84,7 @@ task LocalMSAColabfoldSearch {
       runtime {
         bootDiskSizeGb: 25
         disks: "local-disk 2000 SSD"
-        cpu: 6
+        cpu: 16
         memory: "64 GB"
         machineType: "g2-standard-16"
         gpuType: "nvidia-l4"
