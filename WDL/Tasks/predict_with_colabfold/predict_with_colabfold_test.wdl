@@ -44,7 +44,11 @@ task PredictWithColabfold {
     runtime {
         bootDiskSizeGb: 20
         disks: "local-disk 100 SSD"
+        cpu: 1
+        memory: "64 GB"
         machineType: "a2-highgpu-1g"
+        gpuType: "nvidia-a100-40gb"
+        gpuCount: 1
         preemptible: 3
         maxRetries: 1
         zones: "us-central1-c"
