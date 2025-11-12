@@ -45,8 +45,8 @@ task PredictWithColabfold {
     }
 
     runtime {
-        cpu: 12
-        memory: "85 GB"
+        cpu: 4
+        memory: "64 GB"
         disks: "local-disk 2000 SSD"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
         maxRetries: 2
@@ -54,6 +54,6 @@ task PredictWithColabfold {
         preemptible: 3
         bootDiskSizeGb: 25
         gpuCount: 1
-        gpuType: "a2-highgpu-1g"
+        gpuType: "nvidia-tesla-v100"
     }
 }

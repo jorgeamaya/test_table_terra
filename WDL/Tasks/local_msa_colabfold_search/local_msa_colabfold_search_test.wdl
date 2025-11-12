@@ -95,6 +95,6 @@ task LocalMSAColabfoldSearch {
         preemptible: 3
         bootDiskSizeGb: 25
         gpuCount: 1
-        gpuType: "g2-standard-16"
+        gpuType: "nvidia-tesla-v100"
     }
 }
