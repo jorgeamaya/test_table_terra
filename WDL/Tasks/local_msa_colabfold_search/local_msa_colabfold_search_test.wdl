@@ -86,8 +86,7 @@ task LocalMSAColabfoldSearch {
         disks: "local-disk 2000 SSD"
         cpu: 6
         memory: "64 GB"
-        machineType: "g2-standard-16"
-		gpuType: "nvidia-l4"
+        gpuType: "g2-standard-16"
         gpuCount: 1
         preemptible: 3
         maxRetries: 2
