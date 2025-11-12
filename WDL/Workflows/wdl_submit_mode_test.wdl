@@ -31,11 +31,13 @@ workflow ProtBindScreenSubmitMode {
 			colabfold_db_path = colabfold_db_path
 	}
 
-	scatter (a3m_file in t_002_local_msa_colabfold_search.colabfold_a3m_files) {
+	Array[Array[File]] batched_colabfold_a3m_files = chunk(t_002_local_msa_colabfold_search.colabfold_a3m_files, 40)
+
+	scatter (batch in batched_colabfold_a3m_files) {
 		call predict_with_colabfold_t.PredictWithColabfold as t_003_predict_with_colabfold {
 			input:
 				query_name = query_name,
-				a3m_file = a3m_file
+				a3m_files = batch
 		}
 	}
 

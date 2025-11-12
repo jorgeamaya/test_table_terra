@@ -33,10 +33,10 @@ task PrepareFastaFiles {
     }
 
     runtime {
+        bootDiskSizeGb: 10
+        disks: "local-disk 10 HDD" 
         cpu: 1
         memory: "8 GiB" 
-        disks: "local-disk 10 HDD" 
-        bootDiskSizeGb: 10 
         preemptible: 3
         maxRetries: 1
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/protbindscreen:0.0.7'
