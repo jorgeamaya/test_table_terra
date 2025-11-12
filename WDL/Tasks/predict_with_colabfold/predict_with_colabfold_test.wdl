@@ -45,7 +45,6 @@ task PredictWithColabfold {
     }
 
     runtime {
-      runtime {
         cpu: 12
         memory: "85 GB"
         disks: "local-disk 2000 SSD"
