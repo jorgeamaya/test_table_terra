@@ -41,8 +41,6 @@ task PredictWithColabfold {
         Array[File] colabfold_output_files = glob("Results/~{query_name}_screen/predictions/colabfold_outputs/*")
     }
 
-    parameter
-
     runtime {
         bootDiskSizeGb: 20
         disks: "local-disk 100 SSD"
