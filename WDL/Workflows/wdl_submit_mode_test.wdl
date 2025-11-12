@@ -8,12 +8,9 @@ workflow ProtBindScreenSubmitMode {
 	input {
 		String query_name
 		String query_sequence
-
 		File subject_native_sequences_file 
 		File subject_scrambled_sequences_file
-
-		String colabfold_db_path
-	
+		String colabfold_db_path	
 	}
 
 	call prepare_fasta_files_t.PrepareFastaFiles as t_001_prepare_fasta_files {
@@ -35,11 +32,10 @@ workflow ProtBindScreenSubmitMode {
 		input:
 			query_name = query_name,
 			a3m_files = t_002_local_msa_colabfold_search.colabfold_a3m_files
-		}
-
+	}
 
 	output {
 		Array[File] colabfold_input_files = t_001_prepare_fasta_files.colabfold_input_files
-		Array[File] colabfold_output_files = flatten(t_003_predict_with_colabfold.colabfold_output_files)
+		Array[File] colabfold_output_files = t_003_predict_with_colabfold.colabfold_output_files
 	}
 }
