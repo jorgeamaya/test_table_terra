@@ -55,11 +55,25 @@ task LocalMSAColabfoldSearch {
     # RUN MSAs WITH COLABFOLD SEARCH
     # colabfold_search "/workspace/localmsa_4input" "/workspace/databases" "localmsa_4output" --gpu 1
     ls -R
+    mmseqs gpuserver "${colabfold_db_dir}/colabfold_envdb_202108_db" --max-seqs 10000 --db-load-mode 0 --prefilter-mode 1 &
+    PID1=$!
+    mmseqs gpuserver "${colabfold_db_dir}/uniref30_2302_db" --max-seqs 10000 --db-load-mode 0 --prefilter-mode 1 &
+    PID2=$!
+
+    sleep 20
+
     colabfold_search \
         "${input_dir}" \
         "${colabfold_db_dir}" \
         "${output_dir}" \
-        --gpu 1
+        --gpu 1 \
+        --gpu-server 1 \
+        --threads 12 \
+        --prefilter-mode 1 \
+        --db-load-mode 0
+
+    kill $PID1
+    kill $PID2
 
     ls -R
     >>>
@@ -67,17 +81,16 @@ task LocalMSAColabfoldSearch {
     output {
         Array[File] colabfold_a3m_files = glob("Results/~{query_name}_screen/predictions/a3m_files/~{query_name}*.a3m")
     }
-    runtime {
-	    gpuType: "nvidia-tesla-t4"
+      runtime {
+        bootDiskSizeGb: 25
+        disks: "local-disk 2000 SSD"
+        cpu: 6
+        memory: "64 GB"
+		gpuType: "nvidia-l4"
         gpuCount: 1
-        nvidiaDriverVersion: "418.87.00"
-        zones: "us-central1-c"
-        cpu: 1
-        disks: "local-disk 2000 SSD" 
-        bootDiskSizeGb: 10
-        preemptible: 0
-        maxRetries: 1
-        memory: "256 GB"
+        preemptible: 3
+        maxRetries: 2
+        zones: "us-central1-a"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
     }
 }
