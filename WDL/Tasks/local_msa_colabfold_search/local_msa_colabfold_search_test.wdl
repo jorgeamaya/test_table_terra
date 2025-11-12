@@ -86,11 +86,12 @@ task LocalMSAColabfoldSearch {
         disks: "local-disk 2000 SSD"
         cpu: 6
         memory: "64 GB"
-        gpuType: "g2-standard-16"
+        machineType: "g2-standard-16"
+        gpuType: "nvidia-l4"
         gpuCount: 1
         preemptible: 3
         maxRetries: 2
-        zones: "us-central1-a"
+        zones: "us-central1-c"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
     }
 }
