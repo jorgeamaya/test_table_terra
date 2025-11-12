@@ -90,7 +90,7 @@ task LocalMSAColabfoldSearch {
         memory: "64 GB"
         disks: "local-disk 2000 SSD"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
-        maxRetries: 2 
+        maxRetries: 2
         zones: "us-central1-c"
         preemptible: 3
         bootDiskSizeGb: 25
