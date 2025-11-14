@@ -10,9 +10,6 @@ task LocalMSAColabfoldSearch {
     command <<<
     set -euxo pipefail
 
-    echo "GPU info:"
-    nvidia-smi
-
     ## GETTING FASTA INPUT DIRECTORY AND LISTING FILES
     echo "Files:"
     for f in ~{sep=" " colabfold_input_files}; do
