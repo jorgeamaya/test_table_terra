@@ -55,8 +55,14 @@ task LocalMSAColabfoldSearch {
     # RUN MSAs WITH COLABFOLD SEARCH
     # colabfold_search "/workspace/localmsa_4input" "/workspace/databases" "localmsa_4output" --gpu 1
     ls -R
+
+    export CUDA_VISIBLE_DEVICES=0
+
     mmseqs gpuserver "${colabfold_db_dir}/colabfold_envdb_202108_db" --max-seqs 10000 --db-load-mode 0 --prefilter-mode 1 &
     PID1=$!
+
+    sleep 10
+
     mmseqs gpuserver "${colabfold_db_dir}/uniref30_2302_db" --max-seqs 10000 --db-load-mode 0 --prefilter-mode 1 &
     PID2=$!
 
