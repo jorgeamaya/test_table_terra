@@ -89,7 +89,7 @@ task LocalMSAColabfoldSearch {
     }
 
     runtime {
-        predefinedMachineType: "g2-standard-16"
+        predefinedMachineType: "a2-highgpu-1g"
         disks: "local-disk 2000 SSD"
         docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/custom_build_cudabase_mmseqs2bin_colabfold:0.0.7'
         maxRetries: 2
