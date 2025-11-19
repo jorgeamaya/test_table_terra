@@ -9,8 +9,8 @@ task PredictWithColabfold {
     command <<<
     set -euxo pipefail
 
-    echo "GPU info:"
-    nvidia-smi
+    #echo "GPU info:"
+    #nvidia-smi
 
     # RUN COLABFOLD PREDICTIONS
     ls -R
