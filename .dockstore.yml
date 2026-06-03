@@ -1,9 +1,9 @@
 version: 1.2
 
 workflows:
-  - name: screen_analysis_mode
+  - name: SCREEN_ANALYSIS_MODE
     subclass: WDL
-    primaryDescriptorPath: /WDL/Workflows/screen_analysis_mode.wdl
-  - name: screen_submission_mode
+    primaryDescriptorPath: /WDL/Workflows/SCREEN_ANALYSIS_MODE.wdl
+  - name: SCREEN_SUBMISSION_MODE
     subclass: WDL
-    primaryDescriptorPath: /WDL/Workflows/screen_submission_mode.wdl
+    primaryDescriptorPath: /WDL/Workflows/SCREEN_SUBMISSION_MODE.wdl
