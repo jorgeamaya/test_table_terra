@@ -1,15 +1,9 @@
 version: 1.2
 
 workflows:
-  - name: Experiment_Table
+  - name: screen_analysis_mode
     subclass: WDL
-    primaryDescriptorPath: /tablet_experiment.wdl
-  - name: Analyze_Table
+    primaryDescriptorPath: /WDL/Workflows/screen_analysis_mode.wdl
+  - name: screen_submission_mode
     subclass: WDL
-    primaryDescriptorPath: /WDL/Workflows/wdl_analyze_mode.wdl
-  - name: Submit_Data
-    subclass: WDL
-    primaryDescriptorPath: /WDL/Workflows/wdl_submit_mode.wdl
-  - name: Submit_Data_Test
-    subclass: WDL
-    primaryDescriptorPath: /WDL/Workflows/wdl_submit_mode_test.wdl
+    primaryDescriptorPath: /WDL/Workflows/screen_submission_mode.wdl
