@@ -7,6 +7,6 @@ workflows:
   - name: SCREEN_SUBMISSION_MODE
     subclass: WDL
     primaryDescriptorPath: /WDL/Workflows/SCREEN_SUBMISSION_MODE.wdl
-  - name: SCREEN_SUBMISSION_MODE_LOCAL_MSA.wdl
+  - name: SCREEN_SUBMISSION_MODE_LOCAL_MSA
     subclass: WDL
     primaryDescriptorPath: /WDL/Workflows/SCREEN_SUBMISSION_MODE_LOCAL_MSA.wdl
