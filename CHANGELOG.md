@@ -1,43 +1,50 @@
+# Changelog
 
-# Internal README file for devs
+All notable changes to ProtBindScreen are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## Unreleased
+
+### Changed
 
 `WORKFLOWS` will be named in uppercase.
+`tasks` will stay named in lowercase. 
 
-`tasks` will be named in lowercase. 
-
-# Source Code Privacy Strategy
+**Source Code Privacy Strategy**
 
 During the development, testing, and pre-release phases of ProtBindScreen, workflow deployment follows a GitHub → Dockstore → Terra architecture designed to enable workflow execution while maintaining the privacy of the underlying source code and implementation.
 
-## 1. GitHub Repository (`protbindscreen-wdl`) – Public
+**1. GitHub Repository (`protbindscreen-wdl`) – Public**
 
 - Contains only WDL workflow and task definitions required for workflow registration and execution.
 - Public availability is required for synchronization with Dockstore and integration with Terra.
 - The repository does not contain the ProtBindScreen source code, implementation modules, or proprietary software components.
 
-## 2. Dockstore – Workflow Registry
+**2. Dockstore – Workflow Registry**
 
 - Serves as a workflow registry and versioning layer between GitHub and Terra.
 - Stores workflow descriptors and metadata but does not contain the underlying ProtBindScreen implementation.
 - References WDL workflows hosted in the public GitHub repository.
 
-## 3. Terra Workspaces – Private
+**3. Terra Workspaces – Private**
 
 - Workflows are executed within private Terra workspaces accessible only to authorized users.
 - Input data, outputs, execution history, and workspace resources remain restricted to workspace members.
 
-## 4. Docker Images – Private Google Artifact Registry
+**4. Docker Images – Private Google Artifact Registry**
 
 - The ProtBindScreen implementation is distributed through Docker images rather than through the public WDL repository.
 - Docker images are stored in a private Google Artifact Registry managed by the Salic Lab.
 - Access to the images is controlled through Google Cloud IAM permissions.
 - Terra execution environments are granted permission to pull the images, while the underlying source code remains inaccessible to unauthorized users.
 
-## Future Release
+**Future Release**
 
 The privacy measures described above are intended only for the development, testing, reviewer-access, and pre-release phases of the project. Upon official public release of ProtBindScreen, the source code repository, Docker images, workflow definitions, and associated software resources are expected to become publicly available under the project's selected open-source distribution model.
 
-# Review of currently used docker images
+**Review of currently used docker images**
 
 Tasks: 
 
@@ -105,7 +112,7 @@ ubuntu                                                                          
 hello-world                                                                                                             latest             1b44b5a3e06a   9 months ago   10.1kB
 ghcr.io/sokrypton/colabfold                                                                                             1.5.5-cuda12.2.2   cba799638e84   2 years ago    6.89GB
 
-# Review of workflows
+**Review of workflows**
 
 version: 1.2
 
@@ -167,7 +174,7 @@ The docker images will have other addreses that will reflect salic.lab.group mig
 I'll get back to each of these remember what were they doing, reconstruct a minimal working set of workfloes for submission and analysis.
 The development with GPU-accelerated local MSA remnains a desire of development but will not be attempted before submission.
 
-# Location of Docker images
+**Location of Docker images**
 
 The docker images will be located in a separate repository called `protbindscreen_docker_images` that will stay private. 
 
