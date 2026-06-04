@@ -80,6 +80,6 @@ PYCODE
         bootDiskSizeGb: 10 
         preemptible: 3
         maxRetries: 1
-        docker: 'us-central1-docker.pkg.dev/global-axe-475818-q0/protbindscreen-docker-repo/protbindscreen:0.0.7'
+        docker: 'us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen:0.0.7'
     }
 }
