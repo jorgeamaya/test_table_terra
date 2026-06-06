@@ -2,8 +2,8 @@ version 1.0
 
 task PrepareFastaFiles {
     input {
-        String query_sequence 
         String query_name 
+        String query_sequence 
         File subject_native_sequences_file 
         File subject_scrambled_sequences_file 
     }
