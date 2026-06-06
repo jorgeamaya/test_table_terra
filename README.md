@@ -12,6 +12,12 @@ These workflows are designed for execution on workflow engines that support WDL,
 
 # Status
 
-This repository is under active development. Documentation, examples, Docker images, input templates, and workflow specifications will be expanded over time.
+This repository is under active restructuring.
+
+The current `main` branch is not considered functional for end-to-end Terra execution at this time.
+
+Active development and repair work are continuing on the `development` branch.
+
+Documentation, examples, Docker images, input templates, and workflow specifications will be expanded over time.
 
 For information about the ProtBindScreen platform, methodology, and software package, please refer to the associated ProtBindScreen repositories and publication.
