@@ -19,8 +19,6 @@ task TestPrepareFastaFiles {
 
 		mkdir -p local/inputs local/fasta_inputs local/inventories local/logs
 
-    # Validate input and proceed if validation checks are fully met
-
 	# Set variables
 	
 		mode="submit"
