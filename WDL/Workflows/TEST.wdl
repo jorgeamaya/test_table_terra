@@ -7,12 +7,19 @@ workflow TestTerraEnvironment {
 task TestEnvironment {
         command <<<
                 set -euox pipefail
-
-                env | sort > env.txt
-
-                echo "${WORKSPACE_BUCKET:-NOT_FOUND}" > workspace_bucket.txt
-                echo "${WORKSPACE_NAME:-NOT_FOUND}" > workspace_name.txt
-                echo "${WORKSPACE_NAMESPACE:-NOT_FOUND}" > workspace_namespace.txt
+        
+                python3 <<'PY'
+        import os
+        
+        with open("python_bucket.txt", "w") as f:
+            f.write(str(os.environ.get("WORKSPACE_BUCKET", "NOT_FOUND")))
+        
+        with open("python_workspace.txt", "w") as f:
+            f.write(str(os.environ.get("WORKSPACE_NAME", "NOT_FOUND")))
+        
+        with open("python_namespace.txt", "w") as f:
+            f.write(str(os.environ.get("WORKSPACE_NAMESPACE", "NOT_FOUND")))
+        PY
         >>>
 
         output {
