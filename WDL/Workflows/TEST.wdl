@@ -1,20 +1,45 @@
 version 1.0
 
-import "../Tasks/test/test.wdl" as test_t
+import "../Tasks/test/test_prepare_fasta_files.wdl" as test_prepare_fasta_files_t
+import "../Tasks/test/test_predict_with_colabfold.wdl" as test_predict_with_colabfold_t
+import "../Tasks/test/test_inventory_colabfold_outputs.wdl" as test_inventory_colabfold_outputs_t
 
 workflow TestEnvironment {
-
 	input {
 		String bucket_name
+		String screen_id
+		String query_name
+		String query_sequence
+		Array[File] subject_proteome_datasets
 	}
 
-	call test_t.TestEnvironment as t_001_test_environment {
+	call test_prepare_fasta_files_t.TestPrepareFastaFiles as t_001_prepare_fasta_files {
 		input:
-			bucket_name = bucket_name
+			bucket_name = bucket_name,
+			screen_id = screen_id,
+			query_name = query_name,
+			query_sequence = query_sequence,
+			subject_proteome_datasets = subject_proteome_datasets
+	}
+
+	scatter (fasta_input_group_inventory in t_001_prepare_fasta_files.fasta_input_group_inventories) {
+		call test_predict_with_colabfold_t.TestPredictWithColabfold as t_002_predict_with_colabfold {
+			input:
+				bucket_name = bucket_name,
+				screen_id = screen_id,
+				fasta_input_group_inventory = fasta_input_group_inventory
+		}
+	}
+
+	call test_inventory_colabfold_outputs_t.TestInventoryColabfoldOutputs as t_003_inventory_colabfold_outputs {
+		input:
+			bucket_name = bucket_name,
+			screen_id = screen_id,
+			colabfold_output_group_inventories = t_002_predict_with_colabfold.colabfold_output_group_inventory
 	}
 
 	output {
-		String bucket_name_out = t_001_test_environment.bucket_name_out
-		String bucket_uri_out = t_001_test_environment.bucket_uri_out
+		File fasta_input_inventory = t_001_prepare_fasta_files.fasta_input_inventory
+		File colabfold_output_inventory = t_003_inventory_colabfold_outputs.colabfold_output_inventory
 	}
 }
