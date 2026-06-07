@@ -36,6 +36,8 @@ task TestPrepareFastaFiles {
 			--subject_proteome_datasets ${subject_proteome_datasets} \
 			--log_dir "${log_dir}"
 
+	## stop chekcing here, the rest will be edited later. 
+	
     # Write validated inputs
 		echo '{"screen_id":"~{screen_id}","query_name":"~{query_name}","mode":"dummy"}' > local/inputs/screen_input.json
 
