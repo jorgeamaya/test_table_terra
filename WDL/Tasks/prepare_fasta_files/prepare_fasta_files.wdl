@@ -14,8 +14,10 @@ task TestPrepareFastaFiles {
 		set -e
 
     # Prepare directory structure
-		BUCKET_URI="gs://~{bucket_name}"
-		SCREEN_ROOT="${BUCKET_URI}/screens/~{screen_id}"
+		bucket_name="~{bucket_name}"
+		screen_id="~{screen_id}"
+		BUCKET_URI="gs://${bucket_name}"
+		SCREEN_ROOT="${BUCKET_URI}/screens/${screen_id}"
 
 		mkdir -p local/inputs local/fasta_inputs local/inventories local/logs
 
@@ -35,16 +37,49 @@ task TestPrepareFastaFiles {
 			--query_sequence "${query_sequence}" \
 			--subject_proteome_datasets ${subject_proteome_datasets} \
 			--log_dir "${log_dir}"
-
-	## stop chekcing here, the rest will be edited later. 
 	
     # Write validated inputs
-		echo '{"screen_id":"~{screen_id}","query_name":"~{query_name}","mode":"dummy"}' > local/inputs/screen_input.json
-
-		cat > local/inputs/query.fasta <<EOF
->~{query_name}
-~{query_sequence}
+		cat > local/inputs/screen_input.json << EOF
+{
+  "screen_id": "${screen_id}",
+  "query_name": "${query_name}",
+  "query_sequence": "${query_sequence}",
+  "subject_proteome_datasets": "${subject_proteome_datasets}"
+}
 EOF
+
+    # Copy subject proteome dictionary to local inputs
+		subject_proteome_dictionary_file=""
+
+		for file in ${subject_proteome_datasets}; do
+			file_name="$(basename "${file}")"
+
+			if [[ "${file_name}" == *subject_proteome_dictionary.tsv ]]; then
+				subject_proteome_dictionary_file="${file}"
+				break
+			fi
+		done
+
+		if [[ -z "${subject_proteome_dictionary_file}" ]]; then
+			echo "ERROR: Could not find subject_proteome_dictionary.tsv in subject_proteome_datasets." >&2
+			exit 1
+		fi
+
+		cp "${subject_proteome_dictionary_file}" \
+			local/inputs/subject_proteome_dictionary.tsv
+
+    # Write query TSV to local inputs
+		query_tsv="local/inputs/query_${query_name}.tsv"
+
+		printf "query_name\tquery_sequence\n" > "${query_tsv}"
+		printf "%s\t%s\n" "${query_name}" "${query_sequence}" >> "${query_tsv}"
+
+
+
+
+
+
+
 
 		echo "dummy native sequences" > local/inputs/subject_native_sequences.fasta
 		echo "dummy scrambled sequences" > local/inputs/subject_scrambled_sequences.fasta
