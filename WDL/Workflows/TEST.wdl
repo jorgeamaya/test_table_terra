@@ -1,20 +1,20 @@
 version 1.0
 
-import "tasks/TestBucket.wdl" as Tasks
+import "../Tasks/test/test.wdl" as test_t
 
 workflow TestEnvironment {
 
-    input {
-        String bucket_name
-    }
+	input {
+		String bucket_name
+	}
 
-    call Tasks.TestBucket {
-        input:
-            bucket_name = bucket_name
-    }
+	call test_t.TestEnvironment as t_001_test_environment {
+		input:
+			bucket_name = bucket_name
+	}
 
-    output {
-        String bucket_name_out = Tasks.TestBucket.bucket_name_out
-        String bucket_uri_out = Tasks.TestBucket.bucket_uri_out
-    }
+	output {
+		String bucket_name_out = t_001_test_environment.bucket_name_out
+		String bucket_uri_out = t_001_test_environment.bucket_uri_out
+	}
 }
