@@ -21,7 +21,22 @@ task TestPrepareFastaFiles {
 
     # Validate input and proceed if validation checks are fully met
 
-    ### we work here now
+	# Set variables
+	
+		mode="submit"
+		query_name="~{query_name}"
+		query_sequence="~{query_sequence}"
+		subject_proteome_datasets="~{sep=' ' subject_proteome_datasets}"
+		log_dir="local/logs"
+	
+	# Validate input and write validation logs
+	
+		python -m protbindscreen.protbindscreen_runner \
+			--mode "${mode}" \
+			--query_name "${query_name}" \
+			--query_sequence "${query_sequence}" \
+			--subject_proteome_datasets ${subject_proteome_datasets} \
+			--log_dir "${log_dir}"
 
     # Write validated inputs
 		echo '{"screen_id":"~{screen_id}","query_name":"~{query_name}","mode":"dummy"}' > local/inputs/screen_input.json
