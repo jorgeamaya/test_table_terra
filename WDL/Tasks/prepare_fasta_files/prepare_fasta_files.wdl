@@ -4,8 +4,7 @@ task PrepareFastaFiles {
     input {
         String query_name 
         String query_sequence 
-        File subject_native_sequences_file 
-        File subject_scrambled_sequences_file 
+	Array[File] subject_proteome_datasets
     }
 
     command <<<
