@@ -108,7 +108,7 @@ for idx, (range_i, range_j) in enumerate(zip(aa_ranges_i, aa_ranges_j)):
     }
 
     if matrix_key != "required":
-        analysis_matrices[matrix_name]["include"] = "true"
+        analysis_matrices[matrix_name]["include"] = True
 
 with open("${analysis_matrices_file}", "w") as f:
     json.dump(analysis_matrices, f, indent=4)
