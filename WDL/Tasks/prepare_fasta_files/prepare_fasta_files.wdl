@@ -58,9 +58,9 @@ EOF
 
         # Define local subject proteome dataset paths
 
-        subject_proteome_dictionary_file="local/inputs/subject_proteome_dictionary.tsv"
-        subject_native_sequences_file="local/inputs/subject_proteome_native_seq.tsv"
-        subject_scrambled_sequences_file="local/inputs/subject_proteome_scrambled_seq.tsv"
+        subject_proteome_dictionary_file="$(find local/inputs -maxdepth 1 -name '*subject_proteome_dictionary.tsv' | head -n 1)"
+        subject_native_sequences_file="$(find local/inputs -maxdepth 1 -name '*subject_proteome_native_seq.tsv' | head -n 1)"
+        subject_scrambled_sequences_file="$(find local/inputs -maxdepth 1 -name '*subject_proteome_scrambled_seq.tsv' | head -n 1)"
 
         if [[ ! -f "${subject_proteome_dictionary_file}" ]]; then
             echo "ERROR: Missing local subject_proteome_dictionary.tsv." >&2
