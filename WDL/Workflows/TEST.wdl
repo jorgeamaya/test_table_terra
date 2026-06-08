@@ -1,8 +1,6 @@
 version 1.0
 
-import "../Tasks/test/test_prepare_fasta_files.wdl" as test_prepare_fasta_files_t
-import "../Tasks/test/test_predict_with_colabfold.wdl" as test_predict_with_colabfold_t
-import "../Tasks/test/test_inventory_colabfold_outputs.wdl" as test_inventory_colabfold_outputs_t
+import "../Tasks/prepare_fasta_files/prepare_fasta_files.wdl" as test_prepare_fasta_files_t
 
 workflow TestEnvironment {
 	input {
@@ -22,24 +20,7 @@ workflow TestEnvironment {
 			subject_proteome_datasets = subject_proteome_datasets
 	}
 
-	scatter (fasta_input_group_inventory in t_001_prepare_fasta_files.fasta_input_group_inventories) {
-		call test_predict_with_colabfold_t.TestPredictWithColabfold as t_002_predict_with_colabfold {
-			input:
-				bucket_name = bucket_name,
-				screen_id = screen_id,
-				fasta_input_group_inventory = fasta_input_group_inventory
-		}
-	}
-
-	call test_inventory_colabfold_outputs_t.TestInventoryColabfoldOutputs as t_003_inventory_colabfold_outputs {
-		input:
-			bucket_name = bucket_name,
-			screen_id = screen_id,
-			colabfold_output_group_inventories = t_002_predict_with_colabfold.colabfold_output_group_inventory
-	}
-
 	output {
 		File fasta_input_inventory = t_001_prepare_fasta_files.fasta_input_inventory
-		File colabfold_output_inventory = t_003_inventory_colabfold_outputs.colabfold_output_inventory
 	}
 }
