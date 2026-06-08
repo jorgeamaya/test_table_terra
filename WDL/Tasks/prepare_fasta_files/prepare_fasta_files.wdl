@@ -106,6 +106,12 @@ EOF
 	}
 
 	runtime {
+        bootDiskSizeGb: 10
+        disks: "local-disk 10 HDD" 
+        cpu: 1
+        memory: "16 GiB" 
+        preemptible: 3
+        maxRetries: 1
 		docker: "google/cloud-sdk:slim"
 	}
 }
