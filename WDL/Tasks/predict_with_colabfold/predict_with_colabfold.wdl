@@ -1,6 +1,6 @@
 version 1.0
 
-task TestPredictWithColabfold {
+task PredictWithColabfold {
 
     input {
         String bucket_name
