@@ -29,7 +29,8 @@ workflow ProtBindScreenAnalyzeMode {
 		    aa_ranges_j = aa_ranges_j,
 		    pae_threshold = pae_threshold
 	}
-	output {
-		File analysis_output_inventory = t_001_analyze_screen.analysis_output_inventory
-	}
+    output {
+        File analysis_output_inventory = t_001_analyze_screen.analysis_output_inventory
+        Array[File] analysis_output_files = t_001_analyze_screen.analysis_output_files
+    }
 }
