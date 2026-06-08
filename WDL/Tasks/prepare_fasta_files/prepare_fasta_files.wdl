@@ -87,9 +87,9 @@ EOF
 	# Here continue develop by calling the screen_submisisopn module with all the args
 
 		python -m protbindscreen.submission.screen_submission \
-			--query_tsv "${query_tsv}" \
-			--subject_native_sequences_file "${subject_native_sequences_file}" \
-			--subject_scrambled_sequences_file "${subject_scrambled_sequences_file}" \
+			--query_protein_path "${query_tsv}" \
+			--subject_native_sequences_path "${subject_native_sequences_file}" \
+			--subject_scrambled_sequences_path "${subject_scrambled_sequences_file}" \
 			--predictions_dir "local/predictions" \
 			--inventory_dir "local/inventories" \
 			--log_dir "${log_dir}"
