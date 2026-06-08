@@ -118,7 +118,7 @@ task PredictWithColabfold {
 
         # Copy data to Google Cloud bucket
         
-        if [[ -d "${predictions_dir}" ]]; then
+        if find "${predictions_dir}" -type f | grep -q .; then
             gcloud storage cp --recursive "${predictions_dir}"/* "${SCREEN_ROOT}/predictions/" >> "${log_file}" 2>&1
         fi
         
