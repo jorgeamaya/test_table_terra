@@ -1,6 +1,6 @@
 version 1.0
 
-task TestPrepareFastaFiles {
+task PrepareFastaFiles {
 
     input {
         String bucket_name
