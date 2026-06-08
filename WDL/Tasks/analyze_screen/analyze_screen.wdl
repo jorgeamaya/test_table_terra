@@ -54,6 +54,9 @@ task AnalyzeScreen {
         fasta_input_inventory="~{fasta_input_inventory}"
         colabfold_output_inventory="~{colabfold_output_inventory}"
 
+        # Copy fasta placement inventory in the predictions directory
+
+        cp "${fasta_input_inventory}" "${predictions_dir}/file_placements_inventory.tsv"
 
         # Copy to local VM the proteome dictionary
 
