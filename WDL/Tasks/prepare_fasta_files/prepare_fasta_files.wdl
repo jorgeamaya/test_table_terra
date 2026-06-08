@@ -84,7 +84,7 @@ EOF
 		printf "query_name\tquery_sequence\n" > "${query_tsv}"
 		printf "%s\t%s\n" "${query_name}" "${query_sequence}" >> "${query_tsv}"
 
-	# Here continue develop by calling the screen_submisisopn module with all the args
+	# Generate FASTA prediction inputs and inventories
 
 		python -m protbindscreen.submission.screen_submission \
 			--query_protein_path "${query_tsv}" \
