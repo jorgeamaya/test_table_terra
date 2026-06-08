@@ -139,6 +139,6 @@ task TestPredictWithColabfold {
         preemptible: 3
         maxRetries: 1
         memory: "16 GB"
-        docker: "ghcr.io/sokrypton/colabfold:1.5.5-cuda12.2.2"
+        docker: "us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen-wdl-terra-colabfold:1.5.5-gcloud"
     }
 }
