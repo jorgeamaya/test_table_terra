@@ -138,7 +138,7 @@ task TestPredictWithColabfold {
         bootDiskSizeGb: 30
         preemptible: 3
         maxRetries: 1
-        memory: "12 GB"
+        memory: "16 GB"
         docker: "ghcr.io/sokrypton/colabfold:1.5.5-cuda12.2.2"
     }
 }
