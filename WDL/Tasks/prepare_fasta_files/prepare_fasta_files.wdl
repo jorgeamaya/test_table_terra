@@ -11,7 +11,7 @@ task TestPrepareFastaFiles {
     }
 
     command <<<
-        set -e
+        set -euo pipefail
 
         # Prepare directory structure
 
