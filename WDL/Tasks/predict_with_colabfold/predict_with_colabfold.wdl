@@ -35,7 +35,8 @@ task PredictWithColabfold {
         # Set variables
 
         input_dir="local/fasta_inputs"
-        predictions_dir="local/predictions"
+        predictions_dir="local/predictions/${GROUP_ID}"
+        mkdir -p "${predictions_dir}"
         log_file="local/logs/predict_with_colabfold_${GROUP_ID}.log"
         inventory_file="local/inventories/colabfold_output_group_inventory_${GROUP_ID}.tsv"
 
@@ -108,7 +109,7 @@ task PredictWithColabfold {
         echo "colabfold_output_file" > "${inventory_file}"
         
         find "${predictions_dir}" -type f | sort | while read -r file; do
-            file_from_predictions_dir="${file#${predictions_dir}/}"
+            file_from_predictions_dir="${file#local/predictions/}"
             echo "predictions/${file_from_predictions_dir}" >> "${inventory_file}"
         done
 
@@ -119,7 +120,7 @@ task PredictWithColabfold {
         # Copy data to Google Cloud bucket
         
         if find "${predictions_dir}" -type f | grep -q .; then
-            gcloud storage cp --recursive "${predictions_dir}"/* "${SCREEN_ROOT}/predictions/" >> "${log_file}" 2>&1
+            gcloud storage cp --recursive "${predictions_dir}" "${SCREEN_ROOT}/predictions/" >> "${log_file}" 2>&1
         fi
         
         gcloud storage cp "${inventory_file}" "${SCREEN_ROOT}/inventories/" >> "${log_file}" 2>&1
