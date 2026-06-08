@@ -216,8 +216,8 @@ PY
         # Copy analysis outputs to GCS
 
         gcloud storage cp --recursive "${analysis_dir}" "${ANALYSIS_ROOT}/" >> "${log_file}" 2>&1
-        gcloud storage cp "${analysis_output_inventory}" "${ANALYSIS_ROOT}/inventories/" >> "${log_file}" 2>&1
-        gcloud storage cp "${log_file}" "${ANALYSIS_ROOT}/logs/" >> "${log_file}" 2>&1
+        gcloud storage cp "${analysis_output_inventory}" "${ANALYSIS_ROOT}/inventories/analysis_output_inventory.tsv" >> "${log_file}" 2>&1
+        gcloud storage cp "${log_file}" "${ANALYSIS_ROOT}/logs/analyze_screen.log"
     >>>
 
     output {
