@@ -202,19 +202,37 @@ PY
             --subject_proteome_dictionary "${subject_proteome_dictionary_file}" \
             --log_dir "${log_dir}"
 
-        # Copy to GCS
- 
+        # Write analysis output inventory
+
+        analysis_output_inventory="${inventories_dir}/analysis_output_inventory.tsv"
+
+        echo "analysis_output_file" > "${analysis_output_inventory}"
+
+        find "${analysis_dir}" -type f | sort | while read -r file; do
+            relative_file="${file#${screen_dir}/}"
+            echo "${relative_file}" >> "${analysis_output_inventory}"
+        done
+
+        # Copy analysis outputs to GCS
+
+        gcloud storage cp --recursive "${analysis_dir}" "${ANALYSIS_ROOT}/" >> "${log_file}" 2>&1
+        gcloud storage cp "${analysis_output_inventory}" "${ANALYSIS_ROOT}/inventories/" >> "${log_file}" 2>&1
+        gcloud storage cp "${log_file}" "${ANALYSIS_ROOT}/logs/" >> "${log_file}" 2>&1
+    >>>
+
     output {
-        Array[File] analysis_output_files = glob("Results/~{screen_name}/**/**/**")
+        File analysis_output_inventory = "local/inventories/analysis_output_inventory.tsv"
+        Array[File] analysis_output_files = glob("local/*_screen/analysis/*_analysis/**")
     }
 
+
     runtime {
-        cpu: 1 
-        memory: "8 GiB" 
-        disks: "local-disk 10 HDD" 
-        bootDiskSizeGb: 10 
+        bootDiskSizeGb: 10
+        disks: "local-disk 10 HDD"
+        cpu: 1
+        memory: "16 GiB"
         preemptible: 3
         maxRetries: 1
-        docker: 'us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen:0.0.7'
+        docker: "us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen-wdl-terra-submit-analyze:0.1.0-prerelease"
     }
 }
