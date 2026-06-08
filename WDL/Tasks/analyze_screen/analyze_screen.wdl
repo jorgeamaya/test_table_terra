@@ -127,7 +127,7 @@ PY
         python -m protbindscreen.protbindscreen_runner \
             --mode "${mode}" \
             --query_len "${query_len}" \
-            --analysis_matrices "${analysis_matrices_file}" \
+            --analysis_matrices "$(cat "${analysis_matrices_file}")" \
             --pae_threshold "${pae_threshold}" \
             --log_dir "${log_dir}"
 
@@ -192,7 +192,7 @@ PY
 
         # Run ProtBindScreen analyze module
 
-        python -m protbindscreen.submission.screen_analysis \
+        python -m protbindscreen.analysis.screen_analysis \
             --screen_dir "${screen_dir}" \
             --analysis_dir "${analysis_dir}" \
             --analysis_name "${analysis_name}" \
@@ -209,8 +209,8 @@ PY
         echo "analysis_output_file" > "${analysis_output_inventory}"
 
         find "${analysis_dir}" -type f | sort | while read -r file; do
-            relative_file="${file#${screen_dir}/}"
-            echo "${relative_file}" >> "${analysis_output_inventory}"
+            relative_file="${file#${analysis_dir}/}"
+            echo "${analysis_name}/${relative_file}" >> "${analysis_output_inventory}"
         done
 
         # Copy analysis outputs to GCS
