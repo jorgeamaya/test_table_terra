@@ -74,6 +74,6 @@ EOF
 	}
 
 	runtime {
-		docker: "google/cloud-sdk:slim"
+		docker: "us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen-wdl-terra-submit-analyze:0.1.0-prerelease"
 	}
 }
