@@ -1,10 +1,10 @@
 version 1.0
 
-import "../Tasks/prepare_fasta_files/prepare_fasta_files.wdl" as test_prepare_fasta_files_t
-import "../Tasks/predict_with_colabfold/predict_with_colabfold.wdl" as test_predict_with_colabfold_t
-import "../Tasks/inventory_colabfold_outputs/inventory_colabfold_outputs.wdl" as test_inventory_colabfold_outputs_t
+import "../Tasks/prepare_fasta_files/prepare_fasta_files.wdl" as prepare_fasta_files_t
+import "../Tasks/predict_with_colabfold/predict_with_colabfold.wdl" as predict_with_colabfold_t
+import "../Tasks/inventory_colabfold_outputs/inventory_colabfold_outputs.wdl" as inventory_colabfold_outputs_t
 
-workflow TestEnvironment {
+workflow ProtBindScreenSubmitMode {
 	input {
 		String bucket_name
 		String screen_id
@@ -13,7 +13,7 @@ workflow TestEnvironment {
 		Array[File] subject_proteome_datasets
 	}
 
-	call test_prepare_fasta_files_t.TestPrepareFastaFiles as t_001_prepare_fasta_files {
+	call prepare_fasta_files_t.PrepareFastaFiles as t_001_prepare_fasta_files {
 		input:
 			bucket_name = bucket_name,
 			screen_id = screen_id,
@@ -23,7 +23,7 @@ workflow TestEnvironment {
 	}
 
 	scatter (fasta_input_group_inventory in t_001_prepare_fasta_files.fasta_input_group_inventories) {
-		call test_predict_with_colabfold_t.TestPredictWithColabfold as t_002_predict_with_colabfold {
+		call predict_with_colabfold_t.PredictWithColabfold as t_002_predict_with_colabfold {
 			input:
 				bucket_name = bucket_name,
 				screen_id = screen_id,
@@ -31,7 +31,7 @@ workflow TestEnvironment {
 		}
 	}
 
-	call test_inventory_colabfold_outputs_t.TestInventoryColabfoldOutputs as t_003_inventory_colabfold_outputs {
+	call inventory_colabfold_outputs_t.InventoryColabfoldOutputs as t_003_inventory_colabfold_outputs {
 		input:
 			bucket_name = bucket_name,
 			screen_id = screen_id,
