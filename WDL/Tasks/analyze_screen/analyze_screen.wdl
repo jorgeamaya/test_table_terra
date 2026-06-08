@@ -130,7 +130,7 @@ PY
 
 
         # Download FASTA files listed in the inventory
-              
+        
         awk -F '\t' 'NR > 1 {print $3}' "${fasta_input_inventory}" | while read -r fasta_relative_path; do
         
             if [[ -z "${fasta_relative_path}" ]]; then
@@ -138,7 +138,11 @@ PY
             fi
         
             fasta_gs_path="${SCREEN_ROOT}/${fasta_relative_path}"
-            fasta_local_path="${predictions_dir}/$(basename "${fasta_relative_path}")"
+        
+            # Recreate original screen structure locally
+            fasta_local_path="${screen_dir}/${fasta_relative_path}"
+        
+            mkdir -p "$(dirname "${fasta_local_path}")"
         
             echo "Downloading FASTA: ${fasta_gs_path}" | tee -a "${log_file}"
         
@@ -152,7 +156,7 @@ PY
         done
 
         # Download ColabFold output files listed in the inventory
-        # Keep only files directly under predictions/, skip nested MSA/pairgreedy directories.
+        # Keep screen-level prediction files, skip nested MSA/pairgreedy directories.
         
         awk -F '\t' 'NR > 1 {print $1}' "${colabfold_output_inventory}" | while read -r colabfold_output_relative_path; do
         
@@ -160,14 +164,16 @@ PY
                 continue
             fi
         
-            # Skip nested output files, e.g. predictions/*_env/... or predictions/*_pairgreedy/...
-            if [[ "${colabfold_output_relative_path}" == */*/* ]]; then
+            # Skip nested output files, e.g. predictions/Size1KB1/*_env/... or predictions/Size1KB1/*_pairgreedy/...
+            if [[ "${colabfold_output_relative_path}" == */*_env/* ]] || [[ "${colabfold_output_relative_path}" == */*_pairgreedy/* ]]; then
                 echo "SKIPPED_NESTED_COLABFOLD_OUTPUT: ${colabfold_output_relative_path}" | tee -a "${log_file}"
                 continue
             fi
         
             colabfold_output_gs_path="${SCREEN_ROOT}/${colabfold_output_relative_path}"
-            colabfold_output_local_path="${input_dir}/$(basename "${colabfold_output_relative_path}")"
+            colabfold_output_local_path="${screen_dir}/${colabfold_output_relative_path}"
+        
+            mkdir -p "$(dirname "${colabfold_output_local_path}")"
         
             echo "Downloading ColabFold output: ${colabfold_output_gs_path}" | tee -a "${log_file}"
         
@@ -180,25 +186,17 @@ PY
         
         done
 
-        # Verify that files were downloaded
-        
-        num_files=$(find "${input_dir}" -maxdepth 1 -type f | wc -l)
-        
-        if [[ "${num_files}" -eq 0 ]]; then
-            echo "ERROR: No files were downloaded."
-            exit 1
-        fi
 
         # Run ProtBindScreen analyze module
 
         python -m protbindscreen.submission.screen_analysis \
-            --input_dir "${input_dir}" \
-            --output_dir "${output_dir}" \
-            --analysis_name "${analysis_id}" \
+            --screen_dir "${screen_dir}" \
+            --analysis_dir "${analysis_dir}" \
+            --analysis_name "${analysis_name}" \
             --query_len "${query_len}" \
             --analysis_matrices "${analysis_matrices_file}" \
-            --subject_proteome_dictionary "${subject_proteome_dictionary_file}" \
             --pae_threshold "${pae_threshold}" \
+            --subject_proteome_dictionary "${subject_proteome_dictionary_file}" \
             --log_dir "${log_dir}"
 
         # Copy to GCS
