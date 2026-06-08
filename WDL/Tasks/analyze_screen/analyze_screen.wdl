@@ -2,16 +2,16 @@ version 1.0
 
 task AnalyzeScreen {
     input {
-		String bucket_name
-		String screen_id
-		File fasta_input_inventory 
-		File colabfold_output_inventory
-		Array[File] subject_proteome_datasets 
-		String analysis_id
-		Int query_len 
-		Array[String] aa_ranges_i
-		Array[String] aa_ranges_j
-		Int pae_threshold
+        String bucket_name
+        String screen_id
+        File fasta_input_inventory
+        File colabfold_output_inventory
+        Array[File] subject_proteome_datasets
+        String analysis_id
+        Int query_len
+        Array[String] aa_ranges_i
+        Array[String] aa_ranges_j
+        Int pae_threshold
     }
 
     command <<<
@@ -21,31 +21,68 @@ task AnalyzeScreen {
 
         bucket_name="~{bucket_name}"
         analysis_id="~{analysis_id}"
-        BUCKET_URI="gs://${bucket_name}"
-        ANALYSIS_ROOT="${BUCKET_URI}/analyses/${analysis_id}_screen"
-    
         screen_id="~{screen_id}"
-        SCREEN_ROOT="${BUCKET_URI}/screens/${screen_id}_screen"
 
-        mkdir -p local/inputs local/outputs local/inventories local/logs
+        BUCKET_URI="gs://${bucket_name}"
+        SCREEN_ROOT="${BUCKET_URI}/screens/${screen_id}_screen"
+        ANALYSIS_ROOT="${BUCKET_URI}/analyses/${screen_id}_screen_${analysis_id}_analysis"
+
+        screen_name="${screen_id}_screen"
+        screen_dir="local/${screen_name}"
+        predictions_dir="${screen_dir}/predictions"
+
+        analysis_name="${analysis_id}_analysis"
+        analysis_dir="${screen_dir}/analysis/${analysis_name}"
+
+        inventories_dir="local/inventories"
+        log_dir="local/logs"
+
+        mkdir -p "${screen_dir}"
+        mkdir -p "${predictions_dir}"
+        mkdir -p "${analysis_dir}"
+        mkdir -p "${inventories_dir}"
+        mkdir -p "${log_dir}"
 
         # Set variables
+
+        log_file="${log_dir}/analyze_screen.log"
 
         mode="analyze"
         query_len="~{query_len}"
         pae_threshold="~{pae_threshold}"
 
-        input_dir="local/inputs"
-        output_dir="local/outputs"
-        log_dir="local/logs"
-        log_file="${log_dir}/analyze_screen.log"
-
         fasta_input_inventory="~{fasta_input_inventory}"
         colabfold_output_inventory="~{colabfold_output_inventory}"
+
+
+        # Copy to local VM the proteome dictionary
+
+        subject_proteome_dictionary_file=""
+        
+        for file in ~{sep=' ' subject_proteome_datasets}; do
+            base="$(basename "${file}")"
+        
+            if [[ "${base}" == *subject_proteome_dictionary.tsv ]]; then
+                cp "${file}" "${screen_dir}/subject_proteome_dictionary.tsv"
+                subject_proteome_dictionary_file="${screen_dir}/subject_proteome_dictionary.tsv"
+            fi
+        done
+        
+        if [[ -z "${subject_proteome_dictionary_file}" ]]; then
+            echo "ERROR: No subject_proteome_dictionary.tsv found in subject_proteome_datasets."
+            exit 1
+        fi
+        
+        if [[ ! -s "${subject_proteome_dictionary_file}" ]]; then
+            echo "ERROR: Subject proteome dictionary file is missing or empty: ${subject_proteome_dictionary_file}"
+            exit 1
+        fi
+
+
     
         # Build analysis_matrices from ranges
 
-        analysis_matrices_file="${output_dir}/analysis_matrices.json"
+        analysis_matrices_file="${analysis_dir}/analysis_matrices.json"
 
         python <<PY
 import json
@@ -92,29 +129,6 @@ PY
             --log_dir "${log_dir}"
 
 
-        # Copy to local VM the proteome dictionary
-
-        subject_proteome_dictionary_file=""
-        
-        for file in ~{sep=' ' subject_proteome_datasets}; do
-            base="$(basename "${file}")"
-        
-            if [[ "${base}" == *subject_proteome_dictionary.tsv ]]; then
-                cp "${file}" "${input_dir}/${base}"
-                subject_proteome_dictionary_file="${input_dir}/${base}"
-            fi
-        done
-        
-        if [[ -z "${subject_proteome_dictionary_file}" ]]; then
-            echo "ERROR: No subject_proteome_dictionary.tsv found in subject_proteome_datasets."
-            exit 1
-        fi
-        
-        if [[ ! -s "${subject_proteome_dictionary_file}" ]]; then
-            echo "ERROR: Subject proteome dictionary file is missing or empty: ${subject_proteome_dictionary_file}"
-            exit 1
-        fi
-
         # Download FASTA files listed in the inventory
               
         awk -F '\t' 'NR > 1 {print $3}' "${fasta_input_inventory}" | while read -r fasta_relative_path; do
@@ -124,7 +138,7 @@ PY
             fi
         
             fasta_gs_path="${SCREEN_ROOT}/${fasta_relative_path}"
-            fasta_local_path="${input_dir}/$(basename "${fasta_relative_path}")"
+            fasta_local_path="${predictions_dir}/$(basename "${fasta_relative_path}")"
         
             echo "Downloading FASTA: ${fasta_gs_path}" | tee -a "${log_file}"
         
