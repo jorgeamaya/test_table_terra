@@ -97,6 +97,7 @@ task PredictWithColabfold {
             "${predictions_dir}" >> "${log_file}" 2>&1; then
         
             echo "FAILED_PREDICTION_GROUP: ${GROUP_ID}" | tee -a "${log_file}"
+            touch "${predictions_dir}/FAILED_PREDICTION_GROUP_${GROUP_ID}.txt"
         
         else
         
