@@ -14,12 +14,13 @@ task TestPrepareFastaFiles {
 		set -e
 
     # Prepare directory structure
+
 		bucket_name="~{bucket_name}"
 		screen_id="~{screen_id}"
 		BUCKET_URI="gs://${bucket_name}"
 		SCREEN_ROOT="${BUCKET_URI}/screens/${screen_id}_screen"
 
-		mkdir -p local/inputs local/fasta_inputs local/inventories local/logs
+		mkdir -p local/inputs local/predictions local/inventories local/logs
 
 	# Set variables
 	
@@ -39,6 +40,7 @@ task TestPrepareFastaFiles {
 			--log_dir "${log_dir}"
 	
     # Write validated inputs
+
 		cat > local/inputs/screen_input.json << EOF
 {
   "screen_id": "${screen_id}",
@@ -48,37 +50,52 @@ task TestPrepareFastaFiles {
 }
 EOF
 
-    # Copy subject proteome dictionary to local inputs
-		subject_proteome_dictionary_file=""
+    # Copy subject proteome dataset files to local inputs
 
 		for file in ${subject_proteome_datasets}; do
-			file_name="$(basename "${file}")"
-
-			if [[ "${file_name}" == *subject_proteome_dictionary.tsv ]]; then
-				subject_proteome_dictionary_file="${file}"
-				break
-			fi
+			cp "${file}" "local/inputs/$(basename "${file}")"
 		done
 
-		if [[ -z "${subject_proteome_dictionary_file}" ]]; then
-			echo "ERROR: Could not find subject_proteome_dictionary.tsv in subject_proteome_datasets." >&2
+    # Define local subject proteome dataset paths
+
+		subject_proteome_dictionary_file="local/inputs/subject_proteome_dictionary.tsv"
+		subject_native_sequences_file="local/inputs/subject_proteome_native_seq.tsv"
+		subject_scrambled_sequences_file="local/inputs/subject_proteome_scrambled_seq.tsv"
+
+		if [[ ! -f "${subject_proteome_dictionary_file}" ]]; then
+			echo "ERROR: Missing local subject_proteome_dictionary.tsv." >&2
 			exit 1
 		fi
 
-		cp "${subject_proteome_dictionary_file}" \
-			local/inputs/subject_proteome_dictionary.tsv
+		if [[ ! -f "${subject_native_sequences_file}" ]]; then
+			echo "ERROR: Missing local subject_proteome_native_seq.tsv." >&2
+			exit 1
+		fi
+
+		if [[ ! -f "${subject_scrambled_sequences_file}" ]]; then
+			echo "ERROR: Missing local subject_proteome_scrambled_seq.tsv." >&2
+			exit 1
+		fi
 
     # Write query TSV to local inputs
+
 		query_tsv="local/inputs/query_${query_name}.tsv"
 
 		printf "query_name\tquery_sequence\n" > "${query_tsv}"
 		printf "%s\t%s\n" "${query_name}" "${query_sequence}" >> "${query_tsv}"
 
-	# Here the logic for fasta making and grouping to follow. 
+	# Here continue develop by calling the screen_submisisopn module with all the args
 
+		python -m protbindscreen.submission.screen_submission \
+			--query_tsv "${query_tsv}" \
+			--subject_native_sequences_file "${subject_native_sequences_file}" \
+			--subject_scrambled_sequences_file "${subject_scrambled_sequences_file}" \
+			--predictions_dir "local/predictions" \
+			--inventory_dir "local/inventories" \
+			--log_dir "${log_dir}"
 
 		gcloud storage cp local/inputs/* "${SCREEN_ROOT}/inputs/"
-		gcloud storage cp local/fasta_inputs/* "${SCREEN_ROOT}/predictions/"
+		gcloud storage cp --recursive local/predictions/* "${SCREEN_ROOT}/predictions/"
 		gcloud storage cp local/inventories/* "${SCREEN_ROOT}/inventories/"
 		gcloud storage cp local/logs/* "${SCREEN_ROOT}/logs/"
 	>>>
