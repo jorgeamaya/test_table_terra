@@ -202,7 +202,7 @@ PY
             --subject_proteome_dictionary "${subject_proteome_dictionary_file}" \
             --log_dir "${log_dir}"
 
-        # Write analysis output inventory
+        # Write analysis output inventory and copy analysis outputs to GCS
 
         analysis_output_inventory="${inventories_dir}/analysis_output_inventory.tsv"
 
@@ -210,12 +210,10 @@ PY
 
         find "${analysis_dir}" -type f | sort | while read -r file; do
             relative_file="${file#${analysis_dir}/}"
-            echo "${analysis_name}/${relative_file}" >> "${analysis_output_inventory}"
+            echo "${relative_file}" >> "${analysis_output_inventory}"
+            gcloud storage cp "${file}" "${ANALYSIS_ROOT}/${relative_file}" >> "${log_file}" 2>&1
         done
-
-        # Copy analysis outputs to GCS
-
-        gcloud storage cp --recursive "${analysis_dir}" "${ANALYSIS_ROOT}/" >> "${log_file}" 2>&1
+       
         gcloud storage cp "${analysis_output_inventory}" "${ANALYSIS_ROOT}/inventories/analysis_output_inventory.tsv" >> "${log_file}" 2>&1
         gcloud storage cp "${log_file}" "${ANALYSIS_ROOT}/logs/analyze_screen.log"
     >>>
@@ -228,7 +226,7 @@ PY
 
     runtime {
         bootDiskSizeGb: 10
-        disks: "local-disk 10 HDD"
+        disks: "local-disk 100 HDD"
         cpu: 1
         memory: "16 GiB"
         preemptible: 3
