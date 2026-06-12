@@ -55,9 +55,23 @@ task AnalyzeScreen {
         colabfold_output_inventory="~{colabfold_output_inventory}"
 
         # Copy fasta placement inventory in the predictions directory
+        # Correct the paths in the `file_placements_inventory.tsv` by prepending the screen_name
+        # This will ensure the viewer can function corrrectly. 
+        python <<PY
+import pandas as pd
 
-        cp "${fasta_input_inventory}" "${predictions_dir}/file_placements_inventory.tsv"
+fasta_input_inventory = "${fasta_input_inventory}"
+file_placements_inventory = "${predictions_dir}/file_placements_inventory.tsv"
+screen_name = "${screen_name}"
 
+df = pd.read_csv(fasta_input_inventory, sep="\t")
+
+df["fasta_file"] = screen_name + "/" + df["fasta_file"].astype(str)
+df["group_path"] = screen_name + "/" + df["group_path"].astype(str)
+
+df.to_csv(file_placements_inventory, sep="\t", index=False)
+PY
+   
         # Copy to local VM the proteome dictionary
 
         subject_proteome_dictionary_file=""
