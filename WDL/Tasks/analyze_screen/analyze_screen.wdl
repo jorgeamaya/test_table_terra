@@ -245,6 +245,6 @@ PY
         memory: "16 GiB"
         preemptible: 3
         maxRetries: 1
-        docker: "us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen-wdl-terra-submit-analyze:0.2.0-prerelease"
+        docker: "us-central1-docker.pkg.dev/lithe-aileron-498218-r4/private-gar-protbindscreen-docker-images/protbindscreen-wdl-terra-submit-analyze:0.3.0-prerelease"
     }
 }
